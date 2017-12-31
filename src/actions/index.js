@@ -1,9 +1,7 @@
 import axios from 'axios';
-const ROOT_URL = 'http://localhost:3090';
+const ROOT_URL = 'http://localhost:8000/api';
 
 export const signInUser = ({ email, password }, history) => {
-  const ROOT_URL = 'http://localhost:3090';
-
   return function(dispatch) {
     axios.post(`${ROOT_URL}/signin`, {email, password})
     .then( response => {
