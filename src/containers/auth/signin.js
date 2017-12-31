@@ -18,7 +18,7 @@ class SignIn extends Component {
           type={field.type}
         />
         <div className="text-help">
-          {touched ? error : ''} 
+          {touched ? error : ''}
         </div>
       </div>
     )
@@ -48,7 +48,7 @@ class SignIn extends Component {
           name="email"
           type="email"
           component={this.renderField}
-        />          
+        />
         <Field
           label="Password"
           name="password"
@@ -63,7 +63,7 @@ class SignIn extends Component {
           </button>
         </Link>
       </form>
-    )   
+    )
   }
 }
 

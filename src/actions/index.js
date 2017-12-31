@@ -8,7 +8,7 @@ export const signInUser = ({ email, password }, history) => {
       dispatch({ type: 'AUTH_USER' });
       localStorage.setItem('token', response.data.token);
 
-      history.push('/')
+      history.push('/dashboard')
     })
     .catch( response => {
       dispatch(authError("Incorrect email or password"))
@@ -54,5 +54,11 @@ export const goToDashboard = () => {
     axios.get(`${ROOT_URL}/dashboard`, {
       headers: { authorization: localStorage.getItem('token')}
     })
+  }
+}
+
+export const startConversatioWithUser = ({ username }, history) => {
+  return function(dispatch) {
+    
   }
 }
