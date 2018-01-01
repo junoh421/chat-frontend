@@ -53,11 +53,28 @@ export const authError = (error) => {
   }
 }
 
-
 export const goToDashboard = () => {
   return function(dispatch) {
-    axios.get(`${ROOT_URL}/dashboard`, {
-      headers: { authorization: localStorage.getItem('token')}
+    // headers: { authorization: localStorage.getItem('token')}
+    dispatch({ type: 'CURRENT_USER' });
+  }
+}
+
+export const sendMessage = ({ content, userId }) => {
+  return function(dispatch) {
+    axios.post(`${ROOT_URL}/api/message`, { content, userId })
+    .then( response => {
+    })
+  }
+}
+
+export const fetchMesages = () => {
+  /// Right now only one conversation
+  /// V2 allow users to have different conversations with messages
+  return function(dispatch) {
+    axios.get(`${ROOT_URL}/conversations/5a467d63314682773177f2ba`)
+    .then( response => {
+      dispatch({ type: 'FETCH_MESSAGES', payload: response.data });
     })
   }
 }

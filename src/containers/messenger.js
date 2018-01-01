@@ -4,6 +4,10 @@ import * as actions from '../actions';
 import { connect } from 'react-redux';
 
 class Messenger extends Component {
+  componentWillMount() {
+    this.props.goToDashboard();
+  }
+
   renderField(field) {
     return(
       <div>
@@ -18,7 +22,8 @@ class Messenger extends Component {
   }
 
   handleFormSubmit({content}) {
-    // this.props.sendMessage({ content }, this.props.history);
+    let userId = this.props.currentUser;
+    this.props.sendMessage({content, userId});
   }
 
   render() {
