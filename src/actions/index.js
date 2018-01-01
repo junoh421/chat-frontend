@@ -65,7 +65,7 @@ export const sendMessage = ({ content, userId }) => {
   return function(dispatch) {
     axios.post(`${ROOT_URL}/message`, { content, userId, conversationId })
     .then( response => {
-      // dispatch({ type: 'FETCH_MESSAGES', payload: response.data });
+      dispatch(fetchMesages());
     })
   }
 }
