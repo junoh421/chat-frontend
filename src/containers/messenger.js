@@ -3,8 +3,7 @@ import { Field, reduxForm } from 'redux-form';
 import * as actions from '../actions';
 import { connect } from 'react-redux';
 
-
-class ConversationStarter extends Component {
+class Messenger extends Component {
   renderField(field) {
     return(
       <div>
@@ -18,9 +17,8 @@ class ConversationStarter extends Component {
     )
   }
 
-  handleFormSubmit({username}) {
-    debugger;
-    this.props.startConversatioWithUser({ username }, this.props.history);
+  handleFormSubmit({content}) {
+    this.props.sendMessage({ content }, this.props.history);
   }
 
   render() {
@@ -28,12 +26,13 @@ class ConversationStarter extends Component {
 
     return (
       <div>
-        <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
+        <form className="form-inline" onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
           <Field
-            name="username"
+            name="content"
+            placeholder="Message here..."
             component={this.renderField}
           />
-          <button type="submit" className="btn btn-primary">Go</button>
+          <button type="submit" className="btn btn-primary">Send</button>
         </form>
       </div>
     );
@@ -41,6 +40,6 @@ class ConversationStarter extends Component {
 }
 
 export default reduxForm(
-  { form: 'ConversationStarterForm',
-  }) (connect(null, actions) (ConversationStarter)
+  { form: 'Messenger'
+  }) (connect(null, actions) (Messenger)
 );

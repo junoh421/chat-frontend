@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Header from '../containers/header';
-import ConversationStarter from '../containers/conversation_starter';
+import Messenger from '../containers/messenger';
 
 export default class Dashboard extends Component {
 
@@ -8,7 +8,7 @@ export default class Dashboard extends Component {
     return (
       <div className="Dashboard">
         <Header />
-        <ConversationStarter />
+        <Messenger />
       </div>
     );
   }

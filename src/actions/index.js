@@ -6,8 +6,9 @@ export const signInUser = ({ email, password }, history) => {
     axios.post(`${ROOT_URL}/signin`, {email, password})
     .then( response => {
       dispatch({ type: 'AUTH_USER' });
+      debugger;
+      dispatch(currentUser(response.data.user));
       localStorage.setItem('token', response.data.token);
-
       history.push('/dashboard')
     })
     .catch( response => {
@@ -22,8 +23,8 @@ export const signUpUser = ({ email, password, userName, fullName }, history) => 
     axios.post(`${ROOT_URL}/signup`, {email, password, userName, fullName})
     .then( response => {
       dispatch({ type: 'AUTH_USER' });
+      dispatch(currentUser(response.data.user));
       localStorage.setItem('token', response.data.token);
-
       history.push('/dashboard')
     })
     .catch( response => {
@@ -57,8 +58,13 @@ export const goToDashboard = () => {
   }
 }
 
-export const startConversatioWithUser = ({ username }, history) => {
-  return function(dispatch) {
-    
+export const sendMessage = () => {
+
+}
+
+export const currentUser = (user) => {
+  return {
+    type: 'CURRENT_USER',
+    payload: user
   }
 }
