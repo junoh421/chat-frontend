@@ -18,7 +18,7 @@ class Messenger extends Component {
   }
 
   handleFormSubmit({content}) {
-    this.props.sendMessage({ content }, this.props.history);
+    // this.props.sendMessage({ content }, this.props.history);
   }
 
   render() {
@@ -39,7 +39,12 @@ class Messenger extends Component {
   }
 }
 
+function mapStateToProps(state) {
+  return { currentUser: state.auth.currentUser }
+}
+
 export default reduxForm(
   { form: 'Messenger'
-  }) (connect(null, actions) (Messenger)
+}) (
+  connect(mapStateToProps, actions) (Messenger)
 );

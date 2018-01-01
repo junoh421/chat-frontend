@@ -5,10 +5,11 @@ export const signInUser = ({ email, password }, history) => {
   return function(dispatch) {
     axios.post(`${ROOT_URL}/signin`, {email, password})
     .then( response => {
-      dispatch({ type: 'AUTH_USER' });
-      debugger;
-      dispatch(currentUser(response.data.user));
+      localStorage.setItem('userId', response.data.user._id);
       localStorage.setItem('token', response.data.token);
+
+      dispatch({ type: 'AUTH_USER' });
+      dispatch({ type: 'CURRENT_USER' });
       history.push('/dashboard')
     })
     .catch( response => {
@@ -22,9 +23,11 @@ export const signUpUser = ({ email, password, userName, fullName }, history) => 
   return function(dispatch) {
     axios.post(`${ROOT_URL}/signup`, {email, password, userName, fullName})
     .then( response => {
-      dispatch({ type: 'AUTH_USER' });
-      dispatch(currentUser(response.data.user));
+      localStorage.setItem('userId', response.data.user._id);
       localStorage.setItem('token', response.data.token);
+
+      dispatch({ type: 'AUTH_USER' });
+      dispatch({ type: 'CURRENT_USER' });
       history.push('/dashboard')
     })
     .catch( response => {
@@ -35,6 +38,7 @@ export const signUpUser = ({ email, password, userName, fullName }, history) => 
 
 export const signOutUser = () => {
   localStorage.removeItem('token');
+  localStorage.removeItem('userId');
 
   return {
     type: 'UNAUTH_USER'
@@ -55,16 +59,5 @@ export const goToDashboard = () => {
     axios.get(`${ROOT_URL}/dashboard`, {
       headers: { authorization: localStorage.getItem('token')}
     })
-  }
-}
-
-export const sendMessage = () => {
-
-}
-
-export const currentUser = (user) => {
-  return {
-    type: 'CURRENT_USER',
-    payload: user
   }
 }

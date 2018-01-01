@@ -7,7 +7,7 @@ export default function(state = {}, action) {
     case 'AUTH_ERROR':
       return { ...state, error: action.payload }
     case 'CURRENT_USER':
-      return { ...state, currentUser: action.payload}
+      return { ...state, currentUser: localStorage.getItem('userId')}
   default:
     return state
   }
