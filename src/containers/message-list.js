@@ -10,7 +10,7 @@ class MessageList extends Component {
   renderList() {
     return this.props.messages.map((message) => {
       return (
-        <li className="message-item">
+        <li className="message-item" key={message._id}>
           {message.content}
         </li>
       );

@@ -61,6 +61,8 @@ export const goToDashboard = () => {
 }
 
 export const sendMessage = ({ content, userId }) => {
+  // let conversationId = '5a4a7c9c91dd88c86c9925a0';
+  debugger;
   return function(dispatch) {
     axios.post(`${ROOT_URL}/api/message`, { content, userId })
     .then( response => {
@@ -72,7 +74,7 @@ export const fetchMesages = () => {
   /// Right now only one conversation
   /// V2 allow users to have different conversations with messages
   return function(dispatch) {
-    axios.get(`${ROOT_URL}/conversations/5a467d63314682773177f2ba`)
+    axios.get(`${ROOT_URL}/conversation/5a4a7c9c91dd88c86c9925a0`)
     .then( response => {
       dispatch({ type: 'FETCH_MESSAGES', payload: response.data });
     })
