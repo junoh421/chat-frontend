@@ -43,9 +43,14 @@ form a {
 
 .card {
   width: 30%;
-  min-width: 300px; 
+  min-width: 300px;
 }
 
 .text-help {
   color: red ;
+}
+
+.messenger {
+  padding-bottom: 20px;
+  padding-right: 20px;
 }

@@ -62,6 +62,7 @@ export const goToDashboard = () => {
 
 export const sendMessage = ({ content, userId }) => {
   let conversationId = '5a4a7c9c91dd88c86c9925a0';
+  debugger;
   return function(dispatch) {
     axios.post(`${ROOT_URL}/message`, { content, userId, conversationId })
     .then( response => {

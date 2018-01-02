@@ -1,46 +1,47 @@
 import React, { Component } from 'react';
-import { Field, reduxForm } from 'redux-form';
 import * as actions from '../actions';
 import { connect } from 'react-redux';
 
 class Messenger extends Component {
-  componentWillMount() {
+  constructor(props) {
+    super(props);
+
+    this.state = { term: ''} ;
+    this.onInputChange = this.onInputChange.bind(this);
+    this.onFormSubmit = this.onFormSubmit.bind(this);
+  }
+
+  componentDidMount() {
     this.props.goToDashboard();
   }
 
-  renderField(field) {
-    return(
-      <div>
-        <label>{field.label}</label>
-        <input
-          className="form-control"
-          {...field.input}
-          type={field.type}
-        />
-      </div>
-    )
+  onInputChange(event) {
+    this.setState({ term: event.target.value})
   }
 
-  handleFormSubmit({content}) {
+  onFormSubmit(event) {
+    event.preventDefault();
+
     let userId = this.props.currentUser;
+    let content = this.state.term
     this.props.sendMessage({content, userId});
+    this.setState( {term: ''} );
   }
 
   render() {
-    const { handleSubmit } = this.props;
-
     return (
-      <div>
-        <form className="form-inline" onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
-          <Field
-            name="content"
-            placeholder="Message here..."
-            component={this.renderField}
-          />
+      <form onSubmit={this.onFormSubmit} className="messenger input-group fixed-bottom d-flex justify-content-end">
+        <input
+         placeholder="Message..."
+         className="form-control col-lg-8"
+         value={this.state.term}
+         onChange={this.onInputChange}
+        />
+        <span className="input-group-btn">
           <button type="submit" className="btn btn-primary">Send</button>
-        </form>
-      </div>
-    );
+        </span>
+      </form>
+    )
   }
 }
 
@@ -48,8 +49,4 @@ function mapStateToProps(state) {
   return { currentUser: state.auth.currentUser }
 }
 
-export default reduxForm(
-  { form: 'Messenger'
-}) (
-  connect(mapStateToProps, actions) (Messenger)
-);
+export default connect(mapStateToProps, actions)(Messenger);
