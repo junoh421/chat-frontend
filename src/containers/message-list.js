@@ -27,7 +27,7 @@ class MessageList extends Component {
     }
 
     return (
-      <ul className="message-list col-lg-8">
+      <ul className="message-list border border-secondary rounded mr-3 float-right col-md-8">
         {this.renderList()}
       </ul>
     )
