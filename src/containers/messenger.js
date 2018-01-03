@@ -30,7 +30,7 @@ class Messenger extends Component {
 
   render() {
     return (
-      <form onSubmit={this.onFormSubmit} className="messenger input-group fixed-bottom d-flex justify-content-end">
+      <form onSubmit={this.onFormSubmit} className="messenger input-group fixed-bottom d-flex justify-content-center">
         <input
          placeholder="Message..."
          className="form-control col-lg-8"

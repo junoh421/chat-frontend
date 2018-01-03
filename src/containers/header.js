@@ -9,19 +9,26 @@ class Header extends Component {
       return(
         [ <li className="nav-item active" key={1}>
             <Link to="/dashboard">
-              <button className="btn btn-primary btn-sm">
+              <button className="btn btn-secondary btn-sm">
                 Home
               </button>
             </Link>
           </li>,
           <li className="nav-item active" key={2}>
+            <Link to="/conversations">
+              <button className="btn btn-primary btn-sm">
+                Conversations
+              </button>
+            </Link>
+          </li>,
+          <li className="nav-item active" key={3}>
             <Link to="/users">
               <button className="btn btn-success btn-sm">
                 Users
               </button>
             </Link>
           </li>,
-          <li className="nav-item active" key={3}>
+          <li className="nav-item active" key={4}>
             <Link to="/">
               <button onClick={() => this.props.signOutUser()} className="btn btn-info btn-sm">
                 Sign Out
