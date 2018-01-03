@@ -1,12 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
+import { Link } from 'react-router-dom';
 
 class ConversationList extends Component {
   render() {
     return (
-      <div className="conversation border border-secondary rounded ml-3 float-left col-lg-3">
-        Direct Messages +
+      <div className="message-list float-left col-md-3">
+        No messsages for this conversation...
+        <Link to="/users">
+          <button className="btn btn-primary btn-sm">
+            Search User
+          </button>
+        </Link>
       </div>
     )
   }
@@ -14,7 +20,7 @@ class ConversationList extends Component {
 
 function mapStateToProps(state) {
   return {
-    // conversations: state.conversations
+    conversations: state.conversationss
   };
 }
 

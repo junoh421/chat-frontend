@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import App from './components/app';
 import Dashboard from './components/dashboard';
-import UserSearch from './components/user_search';
+import Users from './components/users';
 import SignUp from './containers/auth/signup';
 import SignIn from './containers/auth/signin';
 import reducers from './reducers';
@@ -29,7 +29,7 @@ ReactDOM.render(
           <Route path='/signin' component={SignIn} />
           <Route path='/signup' component={SignUp} />
           <Route path='/dashboard' component={RequireAuth(Dashboard)} />
-          <Route path='/users' component={RequireAuth(UserSearch)} />
+          <Route path='/users' component={Users} />
           <Route path='/' component={App} />
         </Switch>
       </div>
