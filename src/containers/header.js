@@ -8,15 +8,22 @@ class Header extends Component {
     if (this.props.authenticated) {
       return(
         [ <li className="nav-item active" key={1}>
-            <Link to="/users">
-              <button className="btn btn-info btn-sm">
-                Users
+            <Link to="/dashboard">
+              <button className="btn btn-primary btn-sm">
+                Home
               </button>
             </Link>
           </li>,
           <li className="nav-item active" key={2}>
+            <Link to="/users">
+              <button className="btn btn-success btn-sm">
+                Users
+              </button>
+            </Link>
+          </li>,
+          <li className="nav-item active" key={3}>
             <Link to="/">
-              <button onClick={() => this.props.signOutUser()} className="btn btn-success btn-sm">
+              <button onClick={() => this.props.signOutUser()} className="btn btn-info btn-sm">
                 Sign Out
               </button>
             </Link>
