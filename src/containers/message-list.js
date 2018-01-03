@@ -8,11 +8,15 @@ class MessageList extends Component {
   }
 
   renderList() {
+
     return this.props.messages.map((message) => {
+      let date = new Date(message.createdAt);
+
       return (
-        <li className="message-item" key={message._id}>
-          {message.content}
-        </li>
+        <div className="row message-item" key={message._id}>
+          <p> {message.content} - {message.user.userName}</p>
+          <p> {date.toLocaleDateString()} @ {date.toLocaleTimeString()}</p>
+        </div>
       );
     });
   };
@@ -23,7 +27,7 @@ class MessageList extends Component {
     }
 
     return (
-      <ul className="message-list">
+      <ul className="message-list col-lg-8">
         {this.renderList()}
       </ul>
     )
