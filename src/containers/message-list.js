@@ -13,9 +13,9 @@ class MessageList extends Component {
       let date = new Date(message.createdAt);
 
       return (
-        <div className="row message-item" key={message._id}>
-          <p> {message.content} - {message.user.userName}</p>
-          <p> {date.toLocaleDateString()} @ {date.toLocaleTimeString()}</p>
+        <div className="message-item" key={message._id}>
+          <p className="d-inline"> {message.content} - {message.user.userName}</p>
+          <p className="d-inline"> {date.toLocaleDateString()} @ {date.toLocaleTimeString()}</p>
         </div>
       );
     });
