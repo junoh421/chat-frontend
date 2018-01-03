@@ -7,13 +7,21 @@ class Header extends Component {
   renderNavItems() {
     if (this.props.authenticated) {
       return(
-        <li className="nav-item active">
-          <Link to="/">
-            <button onClick={() => this.props.signOutUser()} className="btn btn-success btn-sm">
-              Sign Out
-            </button>
-          </Link>
-        </li>
+        [ <li className="nav-item active" key={1}>
+            <Link to="/users">
+              <button className="btn btn-info btn-sm">
+                Users
+              </button>
+            </Link>
+          </li>,
+          <li className="nav-item active" key={2}>
+            <Link to="/">
+              <button onClick={() => this.props.signOutUser()} className="btn btn-success btn-sm">
+                Sign Out
+              </button>
+            </Link>
+          </li>
+        ]
       )
     } else {
       return (

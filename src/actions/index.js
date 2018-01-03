@@ -72,12 +72,19 @@ export const sendMessage = ({ content, userId }) => {
 }
 
 export const fetchMesages = () => {
-  /// Right now only one conversation
-  /// V2 allow users to have different conversations with messages
   return function(dispatch) {
     axios.get(`${ROOT_URL}/conversation/5a4a7c9c91dd88c86c9925a0`)
     .then( response => {
       dispatch({ type: 'FETCH_MESSAGES', payload: response.data });
+    })
+  }
+}
+
+export const fetchUsers = () => {
+  return function(dispatch) {
+    axios.get(`${ROOT_URL}/users`)
+    .then( response => {
+      dispatch({ type: 'FETCH_USERS', payload: response.data });
     })
   }
 }
