@@ -53,16 +53,15 @@ export const authError = (error) => {
   }
 }
 
-export const goToDashboard = () => {
-  return function(dispatch) {
-    // headers: { authorization: localStorage.getItem('token')}
-    dispatch({ type: 'CURRENT_USER' });
-  }
-}
+// export const goToDashboard = () => {
+//   return function(dispatch) {
+//     headers: { authorization: localStorage.getItem('token')}
+//     dispatch({ type: 'CURRENT_USER' });
+//   }
+// }
 
 export const sendMessage = ({ content, userId }) => {
   let conversationId = '5a4a7c9c91dd88c86c9925a0';
-  debugger;
   return function(dispatch) {
     axios.post(`${ROOT_URL}/message`, { content, userId, conversationId })
     .then( response => {
@@ -85,6 +84,15 @@ export const fetchUsers = () => {
     axios.get(`${ROOT_URL}/users`)
     .then( response => {
       dispatch({ type: 'FETCH_USERS', payload: response.data });
+    })
+  }
+}
+
+export const fetchConversations = ({userId}) => {
+  return function(dispatch) {
+    axios.get(`${ROOT_URL}/conversations/${userId}`)
+    .then( response => {
+      dispatch({ type: 'FETCH_CONVERSATIONS', payload: response.data });
     })
   }
 }

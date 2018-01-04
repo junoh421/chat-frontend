@@ -1,0 +1,14 @@
+import React, { Component } from 'react';
+import Header from '../containers/header';
+import ConversationList from '../containers/conversation-list';
+
+export default class Conversations extends Component {
+  render() {
+    return (
+      <div className="Dashboard">
+        <Header />
+        <ConversationList />
+      </div>
+    );
+  }
+}

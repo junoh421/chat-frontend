@@ -11,10 +11,6 @@ class Messenger extends Component {
     this.onFormSubmit = this.onFormSubmit.bind(this);
   }
 
-  componentDidMount() {
-    this.props.goToDashboard();
-  }
-
   onInputChange(event) {
     this.setState({ term: event.target.value})
   }
