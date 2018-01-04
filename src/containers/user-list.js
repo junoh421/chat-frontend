@@ -9,8 +9,15 @@ class UserList extends Component {
 
   renderUserList() {
     return this.props.allUsers.map((user) => {
+      let userId = this.props.currentUser;
+      let recipientId = user._id;
+
       return (
-        <a className="list-group-item list-group-item-action" key={user._id}> {user.fullName} -  {user.userName}</a>
+        <a className="list-group-item list-group-item-action"
+        onClick={() => this.props.startConversation({userId, recipientId})}
+        key={user._id}>
+        {user.fullName} -  {user.userName}
+        </a>
       );
     });
   };

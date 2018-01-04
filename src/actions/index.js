@@ -7,10 +7,9 @@ export const signInUser = ({ email, password }, history) => {
     .then( response => {
       localStorage.setItem('userId', response.data.user._id);
       localStorage.setItem('token', response.data.token);
-
+      debugger;
       dispatch({ type: 'AUTH_USER' });
-      dispatch({ type: 'CURRENT_USER' });
-      history.push('/dashboard')
+      history.push('/conversations')
     })
     .catch( response => {
       dispatch(authError("Incorrect email or password"))
@@ -27,7 +26,6 @@ export const signUpUser = ({ email, password, userName, fullName }, history) => 
       localStorage.setItem('token', response.data.token);
 
       dispatch({ type: 'AUTH_USER' });
-      dispatch({ type: 'CURRENT_USER' });
       history.push('/dashboard')
     })
     .catch( response => {
@@ -70,11 +68,12 @@ export const sendMessage = ({ content, userId }) => {
   }
 }
 
-export const fetchMesages = () => {
+export const fetchMesages = ({conversationId}) => {
+  debugger;
   return function(dispatch) {
-    axios.get(`${ROOT_URL}/conversation/5a4a7c9c91dd88c86c9925a0`)
+    axios.get(`${ROOT_URL}/conversation/${conversationId}`)
     .then( response => {
-      dispatch({ type: 'FETCH_MESSAGES', payload: response.data });
+      dispatch({ type: 'FETCH_MESSAGES', payload: response.data })
     })
   }
 }
@@ -93,6 +92,16 @@ export const fetchConversations = ({userId}) => {
     axios.get(`${ROOT_URL}/conversations/${userId}`)
     .then( response => {
       dispatch({ type: 'FETCH_CONVERSATIONS', payload: response.data });
+    })
+  }
+}
+
+export const startConversation = ({userId, recipientId}) => {
+  return function(dispatch) {
+    axios.post(`${ROOT_URL}/conversation`, {userId, recipientId})
+    .then( response => {
+      let conversationId = response.data.conversation._id;
+      dispatch(fetchMesages({conversationId}))
     })
   }
 }

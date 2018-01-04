@@ -11,9 +11,13 @@ class ConversationList extends Component {
   renderConversationList() {
     return this.props.conversations.map((conversation) => {
       let users = conversation.users.map(user => `${user.fullName} (${user.userName})`).join(', ')
+      let conversationId = conversation._id
       return (
-        <li className="list-group-item d-flex justify-content-between align-items-center" key={conversation._id}>{users}
-        <span className="badge badge-primary">{conversation.users.length}</span>
+        <li className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+        key={conversation._id}
+        onClick={() => this.props.fetchMesages({conversationId}, this.props.history)}>
+        {users}
+        <span className="badge badge-primary">{conversation.users.length} users</span>
         </li>
       );
     });
