@@ -8,7 +8,9 @@ class UserList extends Component {
   }
 
   renderUserList() {
-    return this.props.allUsers.map((user) => {
+    let filteredUsers = this.props.allUsers.filter( user => user._id !== this.props.currentUser)
+
+    return filteredUsers.map((user) => {
       let userId = this.props.currentUser;
       let recipientId = user._id;
 
