@@ -71,9 +71,8 @@ export const fetchMesages = ({conversationId}, history) => {
   return function(dispatch) {
     axios.get(`${ROOT_URL}/conversation/${conversationId}`)
     .then( response => {
-      dispatch({ type: 'SELECTED_CONVERSATION', payload: conversationId})
       dispatch({ type: 'FETCH_MESSAGES', payload: response.data });
-      history.push('/messageboard')
+      history.push(`/messageboard/${conversationId}`)
     })
   }
 }

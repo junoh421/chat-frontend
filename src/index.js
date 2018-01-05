@@ -29,7 +29,7 @@ ReactDOM.render(
         <Switch>
           <Route path='/signin' component={SignIn} />
           <Route path='/signup' component={SignUp} />
-          <Route path='/messageboard' component={RequireAuth(Messageboard)} />
+          <Route path='/messageboard/:id' component={RequireAuth(Messageboard)} />
           <Route path='/users' component={RequireAuth(Users)} />
           <Route path='/conversations' component={RequireAuth(Conversations)} />
           <Route path='/' component={App} />

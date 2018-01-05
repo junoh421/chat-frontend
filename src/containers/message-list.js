@@ -25,9 +25,10 @@ class MessageList extends Component {
     this.setState( {term: ''} );
   }
 
-  // componentWillMount() {
-  //   this.props.fetchMesages();
-  // }
+  componentWillMount() {
+    let conversationId = this.props.history.location.pathname.split("/")[2] ///
+    this.props.fetchMesages({conversationId}, this.props.history);
+  }
 
   renderList() {
     if (!this.props.messages) {
@@ -75,7 +76,6 @@ function mapStateToProps(state) {
   return {
     currentUser: state.auth.currentUser,
     messages: state.conversation.messages,
-    conversationId: state.conversation.selectedConversation
   }
 }
 
