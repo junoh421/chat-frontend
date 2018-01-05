@@ -31,15 +31,16 @@ class MessageList extends Component {
 
   renderList() {
     if (!this.props.messages) {
-      return <div>No messsages for this conversation...</div>
+      return <div className="text-center">No messsages for this conversation...</div>
     } else {
       return this.props.messages.map((message) => {
         let date = new Date(message.createdAt);
 
         return (
           <div className="message-item" key={message._id}>
-            <p className="d-inline"> {message.content} - {message.user.userName}</p>
-            <p className="d-inline"> {date.toLocaleDateString()} @ {date.toLocaleTimeString()}</p>
+            <h6 className="d-inline font-weight-bold">{message.user.userName}</h6>
+            <h6 className="d-inline"> {date.toLocaleDateString()} @ {date.toLocaleTimeString()}</h6>
+            <p> {message.content} </p>
           </div>
         );
       });
@@ -48,20 +49,22 @@ class MessageList extends Component {
 
   render() {
     return (
-      <div>
+      <div className="container">
         <ul className="message-list">
           {this.renderList()}
         </ul>
         <form onSubmit={this.onFormSubmit}>
-          <input
-           placeholder="Message..."
-           className="form-control col-lg-8"
-           value={this.state.term}
-           onChange={this.onInputChange}
-          />
-          <span className="input-group-btn">
-            <button type="submit" className="btn btn-primary">Send</button>
-          </span>
+          <div className="input-group">
+            <input
+             placeholder="Message..."
+             className="input-group"
+             value={this.state.term}
+             onChange={this.onInputChange}
+            />
+            <span className="input-group-btn">
+              <button type="submit" className="btn btn-primary">Send</button>
+            </span>
+          </div>
         </form>
       </div>
     )
