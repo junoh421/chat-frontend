@@ -7,7 +7,7 @@ export default class Users extends Component {
     return (
       <div className="UserSearch">
         <Header />
-        <UserList />
+        <UserList history={this.props.history}/>
       </div>
     );
   }

@@ -3,7 +3,7 @@ import * as actions from '../actions';
 import { connect } from 'react-redux';
 
 class UserList extends Component {
-  componentDidMount() {
+  componentWillMount() {
     this.props.fetchUsers();
   }
 
@@ -24,7 +24,7 @@ class UserList extends Component {
     });
   };
 
-  render() {
+  render() {    
     if (!this.props.allUsers.length) {
       return <div>Loading users...</div>
     }

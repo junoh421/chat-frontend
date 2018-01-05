@@ -8,7 +8,7 @@ import conversationReducer from './conversation_reducer';
 const rootReducer = combineReducers({
     form: formReducer,
     auth: authReducer,
-    messages: messageReducer,
+    conversation: messageReducer,
     users: userReducer,
     conversations: conversationReducer
 });

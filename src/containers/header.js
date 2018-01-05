@@ -7,14 +7,7 @@ class Header extends Component {
   renderNavItems() {
     if (this.props.authenticated) {
       return(
-        [ <li className="nav-item active" key={1}>
-            <Link to="/dashboard">
-              <button className="btn btn-secondary btn-sm">
-                Home
-              </button>
-            </Link>
-          </li>,
-          <li className="nav-item active" key={2}>
+        [ <li className="nav-item active" key={2}>
             <Link to="/conversations">
               <button className="btn btn-primary btn-sm">
                 Conversations

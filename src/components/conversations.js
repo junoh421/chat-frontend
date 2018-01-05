@@ -5,9 +5,9 @@ import ConversationList from '../containers/conversation-list';
 export default class Conversations extends Component {
   render() {
     return (
-      <div className="Dashboard">
+      <div className="ConversationBoard">
         <Header />
-        <ConversationList />
+        <ConversationList history={this.props.history}/>
       </div>
     );
   }

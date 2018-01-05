@@ -17,35 +17,36 @@ class MessageList extends Component {
 
   onFormSubmit(event) {
     event.preventDefault();
-
     let userId = this.props.currentUser;
-    let content = this.state.term
-    this.props.sendMessage({content, userId});
+    let content = this.state.term;
+    let conversationId = this.props.conversationId;
+
+    this.props.sendMessage({content, userId, conversationId});
     this.setState( {term: ''} );
   }
 
-  componentWillMount() {
-    this.props.fetchMesages();
-  }
+  // componentWillMount() {
+  //   this.props.fetchMesages();
+  // }
 
   renderList() {
-    return this.props.messages.map((message) => {
-      let date = new Date(message.createdAt);
+    if (!this.props.messages) {
+      return <div>No messsages for this conversation...</div>
+    } else {
+      return this.props.messages.map((message) => {
+        let date = new Date(message.createdAt);
 
-      return (
-        <div className="message-item" key={message._id}>
-          <p className="d-inline"> {message.content} - {message.user.userName}</p>
-          <p className="d-inline"> {date.toLocaleDateString()} @ {date.toLocaleTimeString()}</p>
-        </div>
-      );
-    });
+        return (
+          <div className="message-item" key={message._id}>
+            <p className="d-inline"> {message.content} - {message.user.userName}</p>
+            <p className="d-inline"> {date.toLocaleDateString()} @ {date.toLocaleTimeString()}</p>
+          </div>
+        );
+      });
+    }
   };
 
   render() {
-    if (!this.props.messages.length) {
-      return <div>No messsages for this conversation...</div>
-    }
-
     return (
       <div>
         <ul className="message-list">
@@ -70,7 +71,8 @@ class MessageList extends Component {
 function mapStateToProps(state) {
   return {
     currentUser: state.auth.currentUser,
-    messages: state.messages
+    messages: state.conversation.messages,
+    conversationId: state.conversation.selectedConversation
   }
 }
 

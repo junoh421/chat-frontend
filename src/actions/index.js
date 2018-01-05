@@ -58,22 +58,22 @@ export const authError = (error) => {
 //   }
 // }
 
-export const sendMessage = ({ content, userId }) => {
-  let conversationId = '5a4a7c9c91dd88c86c9925a0';
+export const sendMessage = ({ content, userId, conversationId }) => {
   return function(dispatch) {
     axios.post(`${ROOT_URL}/message`, { content, userId, conversationId })
     .then( response => {
-      dispatch(fetchMesages());
+      dispatch({type: 'SELECTED_CONVERSATION', payload: conversationId})
     })
   }
 }
 
-export const fetchMesages = ({conversationId}) => {
-  debugger;
+export const fetchMesages = ({conversationId}, history) => {
   return function(dispatch) {
     axios.get(`${ROOT_URL}/conversation/${conversationId}`)
     .then( response => {
-      dispatch({ type: 'FETCH_MESSAGES', payload: response.data })
+      dispatch({ type: 'SELECTED_CONVERSATION', payload: conversationId})
+      dispatch({ type: 'FETCH_MESSAGES', payload: response.data });
+      history.push('/messageboard')
     })
   }
 }
@@ -96,12 +96,12 @@ export const fetchConversations = ({userId}) => {
   }
 }
 
-export const startConversation = ({userId, recipientId}) => {
+export const startConversation = ({userId, recipientId}, history) => {
   return function(dispatch) {
     axios.post(`${ROOT_URL}/conversation`, {userId, recipientId})
     .then( response => {
       let conversationId = response.data.conversation._id;
-      dispatch(fetchMesages({conversationId}))
+      dispatch(fetchMesages({conversationId}, history))
     })
   }
 }

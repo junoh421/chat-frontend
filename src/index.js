@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import App from './components/app';
-import Dashboard from './components/dashboard';
+import Messageboard from './components/messageboard';
 import Users from './components/users';
 import Conversations from './components/conversations';
 import SignUp from './containers/auth/signup';
@@ -29,9 +29,9 @@ ReactDOM.render(
         <Switch>
           <Route path='/signin' component={SignIn} />
           <Route path='/signup' component={SignUp} />
-          <Route path='/dashboard' component={RequireAuth(Dashboard)} />
-          <Route path='/users' component={Users} />
-          <Route path='/conversations' component={Conversations} />
+          <Route path='/messageboard' component={RequireAuth(Messageboard)} />
+          <Route path='/users' component={RequireAuth(Users)} />
+          <Route path='/conversations' component={RequireAuth(Conversations)} />
           <Route path='/' component={App} />
         </Switch>
       </div>
