@@ -16,7 +16,7 @@ class UserList extends Component {
 
       return (
         <a className="list-group-item list-group-item-action"
-        onClick={() => this.props.startConversation({userId, recipientId})}
+        onClick={() => this.props.startConversation({userId, recipientId}, this.props.history)}
         key={user._id}>
         {user.fullName} -  {user.userName}
         </a>
@@ -24,7 +24,7 @@ class UserList extends Component {
     });
   };
 
-  render() {    
+  render() {
     if (!this.props.allUsers.length) {
       return <div>Loading users...</div>
     }

@@ -7,7 +7,6 @@ export const signInUser = ({ email, password }, history) => {
     .then( response => {
       localStorage.setItem('userId', response.data.user._id);
       localStorage.setItem('token', response.data.token);
-      debugger;
       dispatch({ type: 'AUTH_USER' });
       history.push('/conversations')
     })

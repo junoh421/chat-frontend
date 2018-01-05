@@ -31,7 +31,7 @@ class MessageList extends Component {
   }
 
   renderList() {
-    if (!this.props.messages) {
+    if (this.props.messages.length === 0) {
       return <div className="text-center">No messsages for this conversation...</div>
     } else {
       return this.props.messages.map((message) => {
@@ -54,6 +54,7 @@ class MessageList extends Component {
         <ul className="message-list">
           {this.renderList()}
         </ul>
+        <br></br>
         <form onSubmit={this.onFormSubmit}>
           <div className="input-group">
             <input
