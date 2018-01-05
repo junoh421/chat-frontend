@@ -58,11 +58,11 @@ export const authError = (error) => {
 //   }
 // }
 
-export const sendMessage = ({ content, userId, conversationId }) => {
+export const sendMessage = ({ content, userId, conversationId }, history) => {
   return function(dispatch) {
     axios.post(`${ROOT_URL}/message`, { content, userId, conversationId })
     .then( response => {
-      dispatch({type: 'SELECTED_CONVERSATION', payload: conversationId})
+      dispatch(fetchMesages({conversationId}, history));
     })
   }
 }

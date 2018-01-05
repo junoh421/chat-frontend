@@ -19,14 +19,14 @@ class MessageList extends Component {
     event.preventDefault();
     let userId = this.props.currentUser;
     let content = this.state.term;
-    let conversationId = this.props.conversationId;
+    let conversationId = this.props.history.location.pathname.split("/")[2];
 
-    this.props.sendMessage({content, userId, conversationId});
+    this.props.sendMessage({content, userId, conversationId}, this.props.history);
     this.setState( {term: ''} );
   }
 
   componentWillMount() {
-    let conversationId = this.props.history.location.pathname.split("/")[2] ///
+    let conversationId = this.props.history.location.pathname.split("/")[2]
     this.props.fetchMesages({conversationId}, this.props.history);
   }
 
