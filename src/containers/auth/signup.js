@@ -11,14 +11,14 @@ class SignUp extends Component {
 
     return(
       <div className={className}>
-        <label>{field.label}</label>
+        <label className="font-weight-bold">{field.label}</label>
         <input
           className="form-control"
           type={field.type}
           {...field.input}
         />
         <div className="text-help">
-          {touched ? error : ''} 
+          {touched ? error : ''}
         </div>
       </div>
     )
@@ -42,43 +42,53 @@ class SignUp extends Component {
     const { handleSubmit } = this.props;
 
     return (
-      <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-        <Field
-          label="Email"
-          name="email"
-          component={this.renderField}
-        />
-        <Field
-          label="Full Name"
-          name="fullName"
-          component={this.renderField}
-        />
-        <Field
-          label="Username"
-          name="userName"
-          component={this.renderField}
-        />
-        <Field
-          label="Password"
-          name="password"
-          type="password"
-          component={this.renderField}
-        />
-        <Field
-          label="Confirm Password"
-          name="confirmPassword"
-          type="password"
-          component={this.renderField}
-        />
-        { this.renderError() }
-        <button type="submit" className="btn btn-primary">Sign up</button>
-        <Link to="/signin">
-          <button className="btn btn-success">
-            Log in
-          </button>
-        </Link>
-      </form>
-    )   
+      <div className="card container mt-5 pt-3">
+        <h1 className="text-center">Sign Up</h1>
+        <div className="card-body">
+          <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+            <Field
+              label="Email"
+              name="email"
+              component={this.renderField}
+            />
+            <Field
+              label="Full Name"
+              name="fullName"
+              component={this.renderField}
+            />
+            <Field
+              label="Username"
+              name="userName"
+              component={this.renderField}
+            />
+            <Field
+              label="Password"
+              name="password"
+              type="password"
+              component={this.renderField}
+            />
+            <Field
+              label="Confirm Password"
+              name="confirmPassword"
+              type="password"
+              component={this.renderField}
+            />
+            { this.renderError() }
+            <button type="submit" className="btn btn-primary btn-block">Sign up</button>
+            <footer className="text-center mt-4">
+              <small className="text-muted">
+                Already have an account?
+              </small>
+            </footer>
+            <Link to="/signin">
+              <button className="btn btn-success btn-block">
+                Log in
+              </button>
+            </Link>
+          </form>
+        </div>
+      </div>
+    )
   }
 }
 
