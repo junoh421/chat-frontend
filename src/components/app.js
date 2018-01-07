@@ -23,6 +23,7 @@ class App extends Component {
   }
 
   messageReceive(message) {
+    debugger;
     this.setState( {message : message} );
   }
 
