@@ -12,7 +12,7 @@
 - Axios
 
 ### Todo
-- Socket.io
 - Search for users using search bar
-- Clean up bootstrap
 - Start testing
+- Setup index route and fix home page
+- Fix message container to scroll down
