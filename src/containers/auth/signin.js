@@ -11,7 +11,7 @@ class SignIn extends Component {
 
     return(
       <div className={className}>
-        <label>{field.label}</label>
+        <label className="font-weight-bold">{field.label}</label>
         <input
           className="form-control"
           {...field.input}
@@ -42,27 +42,37 @@ class SignIn extends Component {
     const { handleSubmit } = this.props;
 
     return (
-      <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-        <Field
-          label="Email"
-          name="email"
-          type="email"
-          component={this.renderField}
-        />
-        <Field
-          label="Password"
-          name="password"
-          type="password"
-          component={this.renderField}
-        />
-        { this.renderError() }
-        <button type="submit" className="btn btn-primary">Sign in</button>
-        <Link to="/signup">
-          <button className="btn btn-success">
-            Sign up
-          </button>
-        </Link>
-      </form>
+      <div className="card container mt-5">
+        <div className="card-body">
+          <h1 className="text-center">Sign In</h1>
+          <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+            <Field
+              label="Email"
+              name="email"
+              type="email"
+              component={this.renderField}
+            />
+            <Field
+              label="Password"
+              name="password"
+              type="password"
+              component={this.renderField}
+            />
+            { this.renderError() }
+            <button type="submit" className="btn btn-primary btn-block">Sign in</button>
+            <footer className="text-center mt-4">
+              <small className="text-muted">
+                New to Chat?
+              </small>
+            </footer>
+            <Link to="/signup">
+              <button className="btn btn-success btn-block">
+                Sign up
+              </button>
+            </Link>
+          </form>
+        </div>
+      </div>
     )
   }
 }

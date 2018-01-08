@@ -31,17 +31,19 @@ class MessageList extends Component {
   }
 
   renderList() {
-    if (this.props.messages.length === 0) {
+    if (!this.props.messages) {
       return <div className="text-center">No messsages for this conversation...</div>
     } else {
       return this.props.messages.map((message) => {
         let date = new Date(message.createdAt);
 
         return (
-          <div className="message-item" key={message._id}>
-            <h6 className="d-inline font-weight-bold">{message.user.userName}</h6>
-            <h6 className="d-inline"> {date.toLocaleDateString()} @ {date.toLocaleTimeString()}</h6>
-            <p> {message.content} </p>
+          <div className="message-item media" key={message._id}>
+            <div className="media-body">
+              <h6 className="d-inline font-weight-bold">{message.user.userName}</h6>
+              <h6 className="d-inline"> {date.toLocaleDateString()} @ {date.toLocaleTimeString()}</h6>
+              <p> {message.content} </p>
+            </div>
           </div>
         );
       });
@@ -51,15 +53,14 @@ class MessageList extends Component {
   render() {
     return (
       <div className="container">
-        <ul className="message-list">
+        <ul className="message-list mt-5 mb-0 pt-3 pt-2 bg-light border">
           {this.renderList()}
         </ul>
-        <br></br>
         <form onSubmit={this.onFormSubmit}>
           <div className="input-group">
             <input
              placeholder="Message..."
-             className="input-group"
+             className="input-group rounded"
              value={this.state.term}
              onChange={this.onInputChange}
             />
