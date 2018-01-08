@@ -31,7 +31,7 @@ class UserList extends Component {
 
     return(
       <div className="containter">
-        <h3 className="text-center">Direct Messages</h3>
+        <h3 className="text-center mb-3">Direct Messages</h3>
         <div className="input-group d-flex flex-row justify-content-center">
           <input type="text" className="form-control col-md-4" placeholder="Find or start a conversation..."/>
           <span className="input-group-btn">
