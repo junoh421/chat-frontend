@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
+import openSocket from 'socket.io-client';
+const socket = openSocket('http://localhost:8000');
 
 class MessageList extends Component {
   constructor(props) {
@@ -9,6 +11,7 @@ class MessageList extends Component {
     this.state = { term: ''} ;
     this.onInputChange = this.onInputChange.bind(this);
     this.onFormSubmit = this.onFormSubmit.bind(this);
+    this.messageReceive = this.messageReceive.bind(this);
   }
 
   onInputChange(event) {
@@ -23,10 +26,19 @@ class MessageList extends Component {
 
     this.props.sendMessage({content, userId, conversationId}, this.props.history);
     this.setState( {term: ''} );
+    socket.emit('send:message', conversationId);
+  }
+
+  componentDidUpdate() {
+    socket.on('receieve:message', this.messageReceive);
   }
 
   componentWillMount() {
     let conversationId = this.props.history.location.pathname.split("/")[2]
+    this.props.fetchMesages({conversationId}, this.props.history);
+  }
+
+  messageReceive(conversationId) {
     this.props.fetchMesages({conversationId}, this.props.history);
   }
 
@@ -80,6 +92,5 @@ function mapStateToProps(state) {
     messages: state.conversation.messages,
   }
 }
-
 
 export default connect(mapStateToProps, actions) (MessageList);
