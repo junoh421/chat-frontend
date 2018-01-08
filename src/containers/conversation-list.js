@@ -29,8 +29,8 @@ class ConversationList extends Component {
     }
 
     return (
-      <div className="container mt-5">
-        <h3 className="text-center">My Conversations</h3>
+      <div className="container mt-4">
+        <h3 className="text-center mb-3">My Conversations</h3>
         <ul className="list-group mb-5">
           {this.renderConversationList()}
         </ul>
