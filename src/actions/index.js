@@ -101,7 +101,5 @@ export const startConversation = ({recipients}, history) => {
       let conversationId = response.data.conversation._id;
       dispatch(fetchMesages({conversationId}, history))
     })
-    .catch( response => {
-    })
   }
 }
