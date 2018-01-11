@@ -13,10 +13,11 @@ class UserList extends Component {
     return filteredUsers.map((user) => {
       let userId = this.props.currentUser;
       let recipientId = user._id;
+      let recipients = [ userId, recipientId];
 
       return (
         <a className="list-group-item list-group-item-action"
-        onClick={() => this.props.startConversation({userId, recipientId}, this.props.history)}
+        onClick={() => this.props.startConversation({recipients}, this.props.history)}
         key={user._id}>
         {user.fullName} -  {user.userName}
         </a>

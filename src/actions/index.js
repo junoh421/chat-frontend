@@ -94,12 +94,14 @@ export const fetchConversations = ({userId}) => {
   }
 }
 
-export const startConversation = ({userId, recipientId}, history) => {
+export const startConversation = ({recipients}, history) => {
   return function(dispatch) {
-    axios.post(`${ROOT_URL}/conversation`, {userId, recipientId})
+    axios.post(`${ROOT_URL}/conversation`, {recipients})
     .then( response => {
       let conversationId = response.data.conversation._id;
       dispatch(fetchMesages({conversationId}, history))
+    })
+    .catch( response => {
     })
   }
 }
