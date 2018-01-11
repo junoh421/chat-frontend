@@ -1,31 +1,35 @@
 import React, { Component } from 'react';
 import * as actions from '../actions';
 import { connect } from 'react-redux';
+import $ from 'jquery';
 
 class UserList extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      recipients: [],
+      recipients: [ ],
+      users: [ ]
     };
-    this.addToConversation = this.addToConversation.bind(this);
-    this.startConversation = this.startConversation.bind(this);
-    this.renderUserList = this.renderUserList.bind(this);
-  }
 
-  componentWillMount() {
-    this.props.fetchUsers();
+    this.addToConversation = this.addToConversation.bind(this);
+    this.renderUserList = this.renderUserList.bind(this);
+    this.startConversation = this.startConversation.bind(this);
   }
 
   addToConversation({recipient}) {
     this.setState({ recipients: [...this.state.recipients, recipient] });
+    $(`#user-${recipient.id}`).remove();
   }
 
   startConversation(event) {
     event.preventDefault();
     let recipients = [...this.state.recipients.map(recipient => recipient.id), this.props.currentUser]
     this.props.startConversation({recipients}, this.props.history)
+  }
+
+  componentWillMount() {
+    this.props.fetchUsers();
   }
 
   renderUserList() {
@@ -38,6 +42,7 @@ class UserList extends Component {
 
       return (
         <a className="list-group-item list-group-item-action"
+        id={"user-" + user._id}
         onClick={() => this.addToConversation({recipient})}
         key={user._id}>
         {user.fullName} -  {user.userName}
@@ -47,11 +52,11 @@ class UserList extends Component {
   };
 
   render() {
+    let names = this.state.recipients.map((user) => user.fullName).join(", ")
+
     if (!this.props.allUsers.length) {
       return <div>Loading users...</div>
     }
-
-    let names = this.state.recipients.map((user) => user.fullName).join(", ")
 
     return(
       <div className="containter">
