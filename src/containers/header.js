@@ -12,8 +12,14 @@ class Header extends Component {
           <li className="nav-item" key={2}>
             <a className="nav-link" href="/users">Users</a>
           </li>,
-          <li className="nav-item" key={3}>
-            <a className="nav-link" onClick={() => this.props.signOutUser()} href="/signin">Sign Out</a>
+          <li className="nav-item dropdown" key={3}>
+            <a href="#" className="nav-link dropdown-toggle" data-toggle="dropdown">Profile</a>
+            <div className="dropdown-menu">
+              <a className="nav-link">Signed in as</a>
+              <div className="dropdown-divider"></div>
+              <a href="/profile" className="dropdown-item">Your Profile</a>
+              <a onClick={() => this.props.signOutUser()} href="/signin" className="dropdown-item">Sign Out</a>
+            </div>
           </li>
         ]
       )
@@ -48,7 +54,9 @@ class Header extends Component {
 }
 
 function mapStateToProps(state) {
-  return { authenticated: state.auth.authenticated}
+  return {
+    authenticated: state.auth.authenticated,
+  }
 }
 
 export default connect(mapStateToProps, actions) (Header)
