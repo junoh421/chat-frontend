@@ -88,6 +88,15 @@ export const fetchUsers = () => {
   }
 }
 
+export const fetchUser = ({userId}, history) => {
+  return function(dispatch) {
+    axios.get(`${ROOT_URL}/user/${userId}`)
+    .then( response => {
+      dispatch({ type: 'FETCH_PROFILE', payload: response.data });
+    })
+  }
+}
+
 export const fetchConversations = ({userId}) => {
   return function(dispatch) {
     axios.get(`${ROOT_URL}/conversations/${userId}`)

@@ -6,6 +6,7 @@ import App from './components/app';
 import Messageboard from './components/messageboard';
 import Users from './components/users';
 import Conversations from './components/conversations';
+import Profile from './components/profile';
 import SignUp from './containers/auth/signup';
 import SignIn from './containers/auth/signin';
 import reducers from './reducers';
@@ -32,6 +33,7 @@ ReactDOM.render(
           <Route path='/messageboard/:id' component={RequireAuth(Messageboard)} />
           <Route path='/users' component={RequireAuth(Users)} />
           <Route path='/conversations' component={RequireAuth(Conversations)} />
+          <Route path='/profile' component={RequireAuth(Profile)} />
           <Route path='/' component={App} />
         </Switch>
       </div>
