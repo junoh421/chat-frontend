@@ -6,7 +6,9 @@ export const signInUser = ({ email, password }, history) => {
     axios.post(`${ROOT_URL}/signin`, {email, password})
     .then( response => {
       localStorage.setItem('userId', response.data.user._id);
+      localStorage.setItem('userName', response.data.user.userName);
       localStorage.setItem('token', response.data.token);
+
       dispatch({ type: 'AUTH_USER' });
       history.push('/conversations')
     })
@@ -22,6 +24,7 @@ export const signUpUser = ({ email, password, userName, fullName }, history) => 
     axios.post(`${ROOT_URL}/signup`, {email, password, userName, fullName})
     .then( response => {
       localStorage.setItem('userId', response.data.user._id);
+      localStorage.setItem('userName', response.data.user.userName);
       localStorage.setItem('token', response.data.token);
 
       dispatch({ type: 'AUTH_USER' });

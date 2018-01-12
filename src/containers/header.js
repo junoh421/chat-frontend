@@ -13,12 +13,12 @@ class Header extends Component {
             <a className="nav-link" href="/users">Users</a>
           </li>,
           <li className="nav-item dropdown" key={3}>
-            <a href="#" className="nav-link dropdown-toggle" data-toggle="dropdown">Profile</a>
+            <a className="nav-link dropdown-toggle" data-toggle="dropdown">Profile</a>
             <div className="dropdown-menu">
-              <a className="nav-link">Signed in as</a>
+              <a className="dropdown-item text-left">Signed in as {this.props.userName}</a>
               <div className="dropdown-divider"></div>
-              <a href="/profile" className="dropdown-item">Your Profile</a>
-              <a onClick={() => this.props.signOutUser()} href="/signin" className="dropdown-item">Sign Out</a>
+              <a href="/profile" className="dropdown-item text-left">Your Profile</a>
+              <a onClick={() => this.props.signOutUser()} href="/signin" className="dropdown-item text-left">Sign Out</a>
             </div>
           </li>
         ]
@@ -56,6 +56,7 @@ class Header extends Component {
 function mapStateToProps(state) {
   return {
     authenticated: state.auth.authenticated,
+    userName: state.auth.userName
   }
 }
 
