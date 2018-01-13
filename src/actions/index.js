@@ -97,6 +97,20 @@ export const fetchUser = ({userId}, history) => {
   }
 }
 
+export const updateUser = ({id, email, password, userName, fullName }, history) => {
+  return function(dispatch) {
+    axios.put(`${ROOT_URL}/user/:id`, {email, password, userName, fullName})
+    .then( response => {
+      localStorage.setItem('userName', response.data.user.userName);
+
+      dispatch({ type: 'AUTH_USER' });
+    })
+    .catch( response => {
+      dispatch(authError(response.response.data.error))
+    })
+  }
+}
+
 export const fetchConversations = ({userId}) => {
   return function(dispatch) {
     axios.get(`${ROOT_URL}/conversations/${userId}`)
