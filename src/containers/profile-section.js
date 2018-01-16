@@ -15,11 +15,18 @@ class ProfileSection extends Component {
     this.props.updateUser({ id, email, password, userName, fullName }, this.props.history);
   }
 
-  renderError() {
+  renderMessage() {
+    debugger;
     if (this.props.errorMessage) {
       return (
         <div className="alert alert-danger">
           <strong> {this.props.errorMessage} </strong>
+        </div>
+      )
+    } else if (this.props.successMessage) {
+      return (
+        <div className="alert alert-success text-center">
+          <strong> {this.props.successMessage} </strong>
         </div>
       )
     }
@@ -79,7 +86,7 @@ class ProfileSection extends Component {
               type="password"
               component={this.renderField}
             />
-            { this.renderError() }
+            { this.renderMessage() }
             <button type="submit" className="btn btn-primary btn-block">Update</button>
           </form>
         </div>
@@ -114,15 +121,11 @@ function validate(values) {
   return errors;
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   return {
     errorMessage: state.auth.error,
+    successMessage: state.auth.success,
     userId: state.auth.currentUser,
-    initialValues: {
-      email: state.profile.email,
-      fullName: state.profile.fullName,
-      userName: state.profile.userName
-    }
   }
 }
 

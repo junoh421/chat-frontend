@@ -53,6 +53,14 @@ export const authError = (error) => {
   }
 }
 
+export const authSuccess = (success) => {
+  return {
+    type: 'AUTH_SUCCESS',
+    payload: success
+  }
+}
+
+
 // export const goToDashboard = () => {
 //   return function(dispatch) {
 //     headers: { authorization: localStorage.getItem('token')}
@@ -99,11 +107,11 @@ export const fetchUser = ({userId}, history) => {
 
 export const updateUser = ({id, email, password, userName, fullName }, history) => {
   return function(dispatch) {
-    axios.put(`${ROOT_URL}/user/:id`, {email, password, userName, fullName})
+    axios.put(`${ROOT_URL}/user/${id}`, {email, password, userName, fullName})
     .then( response => {
       localStorage.setItem('userName', response.data.user.userName);
-
       dispatch({ type: 'AUTH_USER' });
+      dispatch(authSuccess(response.data.message));
     })
     .catch( response => {
       dispatch(authError(response.response.data.error))
