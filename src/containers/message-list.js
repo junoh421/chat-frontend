@@ -72,13 +72,13 @@ class MessageList extends Component {
           <div className="input-group">
             <input
              placeholder="Message..."
-             className="input-group rounded"
+             className="form-control"
              value={this.state.term}
              onChange={this.onInputChange}
             />
-            <span className="input-group-btn">
+            <div className="input-group-append">
               <button type="submit" className="btn btn-primary">Send</button>
-            </span>
+            </div>
           </div>
         </form>
       </div>

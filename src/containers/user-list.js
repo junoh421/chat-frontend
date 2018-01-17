@@ -63,7 +63,7 @@ class UserList extends Component {
         <h3 className="text-center mb-3">Direct Messages</h3>
           <form className="input-group d-flex flex-row justify-content-center" onSubmit={this.startConversation}>
             <input
-             placeholder="Find or start a conversation..."
+             placeholder="Click on users to get started..."
              className="input-group col-md-5"
              value={names}
             />
