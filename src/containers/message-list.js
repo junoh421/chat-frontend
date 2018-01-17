@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
+import $ from 'jquery';
 import openSocket from 'socket.io-client';
 const socket = openSocket('http://localhost:8000');
 
@@ -29,9 +30,19 @@ class MessageList extends Component {
     socket.emit('send:message', conversationId);
   }
 
+  componentDidMount() {
+    $( document ).ready(function() {
+      $('.message-list').scrollTop($('.message-list')[0].scrollHeight);
+    });
+  }
+
   componentDidUpdate() {
     socket.on('receieve:message', this.messageReceive);
+    $( document ).ready(function() {
+      $('.message-list').scrollTop($('.message-list')[0].scrollHeight);
+    });
   }
+
 
   componentWillMount() {
     let conversationId = this.props.history.location.pathname.split("/")[2]

@@ -57,5 +57,7 @@ form a {
 .message-list {
   height: 800px;
   max-height: 800px;
-  overflow-y: scroll;
+  overflow: auto;
+  position: relative;
+  bottom: 0;
 }
