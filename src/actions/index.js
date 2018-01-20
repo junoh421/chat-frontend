@@ -137,3 +137,12 @@ export const startConversation = ({recipients}, history) => {
     })
   }
 }
+
+export const deleteMessage = ({messageId, conversationId}, history) => {
+  return function(dispatch) {
+    axios.delete(`${ROOT_URL}/message/${messageId}`)
+    .then( response => {
+      dispatch(fetchMesages({conversationId}, history))
+    })
+  }
+}

@@ -59,12 +59,24 @@ class MessageList extends Component {
     } else {
       return this.props.messages.map((message) => {
         let date = new Date(message.createdAt);
+        let messageId = message._id;
+        let conversationId = this.props.history.location.pathname.split("/")[2];
 
         return (
           <div className="message-item media" key={message._id}>
             <div className="media-body">
               <h6 className="d-inline font-weight-bold">{message.user.userName}</h6>
               <h6 className="d-inline"> {date.toLocaleDateString()} @ {date.toLocaleTimeString()}</h6>
+              <button className="btn btn-secondary dropdown-toggle float-lg-right mr-4" type="button" data-toggle="dropdown">
+                <span className="text-center">...</span>
+              </button>
+              <div className="dropdown-menu">
+                  <button className="dropdown-item">Edit</button>
+                  <button className="btn btn-danger dropdown-item"
+                   onClick={() => this.props.deleteMessage({messageId, conversationId}, this.props.history)}>
+                  Delete
+                  </button>
+              </div>
               <p> {message.content} </p>
             </div>
           </div>
