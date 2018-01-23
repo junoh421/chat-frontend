@@ -61,3 +61,11 @@ form a {
   position: relative;
   bottom: 0;
 }
+
+.message-actions button{
+  display: none;
+}
+
+.message-item:hover .message-actions button {
+  display: inline-block;
+}

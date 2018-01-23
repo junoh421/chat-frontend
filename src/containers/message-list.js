@@ -61,8 +61,8 @@ class MessageList extends Component {
 
     if (userId === this.props.currentUser) {
       return(
-        <div className="message-actions">
-          <button className="btn btn-primary float-lg-right mr-4" type="button" data-toggle="dropdown">
+        <div className="message-actions d-inline">
+          <button className="btn btn-primary float-lg-right mr-3" data-trigger="hover" type="button" data-toggle="dropdown">
             <span className="text-center">...</span>
           </button>
           <div className="dropdown-menu">
