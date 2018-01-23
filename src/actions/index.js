@@ -60,6 +60,13 @@ export const authSuccess = (success) => {
   }
 }
 
+export const usersList = (users) => {
+  return {
+    type: 'USERS_CONVERSATION',
+    payload: users
+  }
+}
+
 
 // export const goToDashboard = () => {
 //   return function(dispatch) {
@@ -77,7 +84,7 @@ export const sendMessage = ({ content, userId, conversationId }, history) => {
   }
 }
 
-export const fetchMesages = ({conversationId}, history) => {
+export const fetchMesages = ({conversationId, users}, history) => {
   return function(dispatch) {
     axios.get(`${ROOT_URL}/conversation/${conversationId}`)
     .then( response => {

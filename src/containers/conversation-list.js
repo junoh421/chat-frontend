@@ -10,22 +10,22 @@ class ConversationList extends Component {
 
   renderConversationList() {
     return this.props.conversations.map((conversation) => {
-      let users = conversation.users.map(user => `${user.fullName} (${user.userName})`).join(', ')
-      let conversationId = conversation._id
+      let userNames = conversation.users.map(user => `${user.fullName} (${user.userName})`).join(', ');
+      let conversationId = conversation._id;
       return (
-        <li className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-        key={conversation._id}
-        onClick={() => this.props.fetchMesages({conversationId}, this.props.history)}>
-        {users}
-        <span className="badge badge-primary">{conversation.users.length} users</span>
-        </li>
+        <a className="conversation-link" key={conversationId} href={`/messageboard/${conversationId}`}>
+          <li className="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+          {userNames}
+          <span className="badge badge-primary">{conversation.users.length} users</span>
+          </li>
+        </a>
       );
     });
   };
 
   render() {
     if (!this.props.conversations.length) {
-      return <div>No conversations started ...</div>
+      return <h3 className="text-center mt-5">No conversations started ...</h3>
     }
 
     return (

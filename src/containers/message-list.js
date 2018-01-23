@@ -79,11 +79,12 @@ class MessageList extends Component {
 
   renderList() {
     if (!this.props.messages) {
-      return <div className="text-center">No messsages for this conversation...</div>
+      return <div className="text-center">Loading...</div>
+    } else if (this.props.messages.length === 0 ) {
+      return <div className="text-center">This is the very beginning of your direct message history with...</div>
     } else {
       return this.props.messages.map((message) => {
         let date = new Date(message.createdAt);
-
         return (
           <div className="message-item media" key={message._id}>
             <div className="media-body">
@@ -106,15 +107,15 @@ class MessageList extends Component {
         </ul>
         <form onSubmit={this.onFormSubmit}>
           <div className="input-group">
+            <div className="input-group-prepend">
+              <button type="submit" className="btn btn-primary">+</button>
+            </div>
             <input
              placeholder="Message..."
              className="form-control"
              value={this.state.term}
              onChange={this.onInputChange}
             />
-            <div className="input-group-append">
-              <button type="submit" className="btn btn-primary">Send</button>
-            </div>
           </div>
         </form>
       </div>
