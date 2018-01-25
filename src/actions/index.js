@@ -67,13 +67,19 @@ export const usersList = (users) => {
   }
 }
 
+export const uploadSuccess = (data) => {
+  return {
+    type: 'UPLOAD_DOCUMENT_SUCCESS',
+    data
+  };
+}
 
-// export const goToDashboard = () => {
-//   return function(dispatch) {
-//     headers: { authorization: localStorage.getItem('token')}
-//     dispatch({ type: 'CURRENT_USER' });
-//   }
-// }
+export const uploadFail = (error) => {
+  return {
+    type: 'UPLOAD_DOCUMENT_FAIL',
+    error
+  };
+}
 
 export const sendMessage = ({ content, userId, conversationId }, history) => {
   return function(dispatch) {
@@ -150,6 +156,20 @@ export const deleteMessage = ({messageId, conversationId}, history) => {
     axios.delete(`${ROOT_URL}/message/${messageId}`)
     .then( response => {
       dispatch(fetchMesages({conversationId}, history))
+    })
+  }
+}
+
+export const uploadPhoto = ({photo}) => {
+  debugger;
+
+  return function(dispatch) {
+    axios.post(`${ROOT_URL}/profile/upload`, {photo})
+    .then( response => {
+      dispatch(uploadSuccess(response))
+    })
+    .catch( error => {
+      dispatch(uploadFail(error));
     })
   }
 }

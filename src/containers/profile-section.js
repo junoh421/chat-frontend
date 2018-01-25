@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 import { Field, reduxForm } from 'redux-form';
+import ProfileUpload from './profile-upload';
 
 class ProfileSection extends Component {
   componentWillMount() {
@@ -86,6 +87,7 @@ class ProfileSection extends Component {
               component={this.renderField}
             />
             { this.renderMessage() }
+            <ProfileUpload />
             <button type="submit" className="btn btn-primary btn-block">Update</button>
           </form>
         </div>
