@@ -12,7 +12,7 @@
 - Axios
 
 ### Todo
-- Search for users using search bar
 - Start testing
 - Setup index route and fix home page
-- Fix message container to scroll down
+- Upload photo, display profile photo
+- Display users on conversation

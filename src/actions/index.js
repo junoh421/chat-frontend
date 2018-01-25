@@ -161,8 +161,6 @@ export const deleteMessage = ({messageId, conversationId}, history) => {
 }
 
 export const uploadPhoto = ({photo}) => {
-  debugger;
-
   return function(dispatch) {
     axios.post(`${ROOT_URL}/profile/upload`, {photo})
     .then( response => {
