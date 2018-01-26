@@ -90,9 +90,9 @@ export const sendMessage = ({ content, userId, conversationId }, history) => {
   }
 }
 
-export const fetchMesages = ({conversationId, users}, history) => {
+export const fetchMesages = ({conversationId}, history) => {
   return function(dispatch) {
-    axios.get(`${ROOT_URL}/conversation/${conversationId}`)
+    axios.get(`${ROOT_URL}/messages/${conversationId}`)
     .then( response => {
       dispatch({ type: 'FETCH_MESSAGES', payload: response.data });
       history.push(`/messageboard/${conversationId}`)
