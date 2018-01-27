@@ -9,16 +9,26 @@ class MessageList extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { term: ''} ;
+    this.state = {
+      term: '',
+      editMessageId: null
+    };
     this.onInputChange = this.onInputChange.bind(this);
     this.onFormSubmit = this.onFormSubmit.bind(this);
     this.messageReceive = this.messageReceive.bind(this);
+    this.renderMessageContent = this.renderMessageContent.bind(this);
     this.renderDropdown = this.renderDropdown.bind(this);
     this.renderMessager = this.renderMessager.bind(this);
+    this.editMessage = this.editMessage.bind(this);
   }
 
   onInputChange(event) {
     this.setState({ term: event.target.value})
+  }
+
+  editMessage({message}) {
+    debugger;
+    this.setState({ editMessageId: message._id})
   }
 
   onFormSubmit(event) {
@@ -68,18 +78,42 @@ class MessageList extends Component {
             <span className="text-center">...</span>
           </button>
           <div className="dropdown-menu">
-              <button className="dropdown-item">Edit</button>
-              <button className="btn btn-danger dropdown-item"
-               onClick={() => this.props.deleteMessage({messageId, conversationId}, this.props.history)}>
-              Delete
-              </button>
+            <button className="dropdown-item"
+              onClick={() => this.editMessage({message})}
+            >
+            Edit
+            </button>
+            <button className="btn btn-danger dropdown-item"
+             onClick={() => this.props.deleteMessage({messageId, conversationId}, this.props.history)}>
+            Delete
+            </button>
           </div>
         </div>
       )
     }
   }
 
+  renderMessageContent(message) {
+    let date = new Date(message.createdAt);
+
+    if (this.state.editMessageId === message._id) {
+      <div className="message-content">
+        <h6 className="d-inline font-weight-bold">{message.user.userName}</h6>
+        <p> testing </p>
+      </div>
+    } else {
+      return(
+        <div className="message-content">
+          <h6 className="d-inline font-weight-bold">{message.user.userName}</h6>
+          <h6 className="d-inline"> {date.toLocaleDateString()} @ {date.toLocaleTimeString()}</h6>
+          <p> {message.content} </p>
+        </div>
+      )
+    }
+  }
+
   renderList() {
+    debugger;
     if (!this.props.messages) {
       return <div className="text-center">Loading...</div>
     } else if (this.props.messages.length === 0 && this.props.users) {
@@ -87,14 +121,13 @@ class MessageList extends Component {
       return <div className="text-center">This is the very beginning of your direct message history with {userNames}</div>
     } else {
       return this.props.messages.map((message) => {
-        let date = new Date(message.createdAt);
         return (
-          <div className="message-item media" key={message._id}>
-            <div className="media-body">
-              <h6 className="d-inline font-weight-bold">{message.user.userName}</h6>
-              <h6 className="d-inline"> {date.toLocaleDateString()} @ {date.toLocaleTimeString()}</h6>
-              {this.renderDropdown(message)}
-              <p> {message.content} </p>
+          <div className={"message-" + message._id} key={message._id}>
+            <div className="message-item media">
+              <div className="media-body">
+                {this.renderMessageContent(message)}
+                {this.renderDropdown(message)}
+              </div>
             </div>
           </div>
         );
