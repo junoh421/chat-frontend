@@ -100,6 +100,15 @@ export const fetchMesages = ({conversationId}, history) => {
   }
 }
 
+export const fetchUsersForConversation = ({conversationId}, history) => {
+  return function(dispatch) {
+    axios.get(`${ROOT_URL}/users/${conversationId}`)
+    .then( response => {
+      dispatch({ type: 'USERS_CONVERSATION', payload: response.data})
+    })
+  }
+}
+
 export const fetchUsers = () => {
   return function(dispatch) {
     axios.get(`${ROOT_URL}/users`)

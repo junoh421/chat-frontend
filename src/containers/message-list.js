@@ -14,6 +14,7 @@ class MessageList extends Component {
     this.onFormSubmit = this.onFormSubmit.bind(this);
     this.messageReceive = this.messageReceive.bind(this);
     this.renderDropdown = this.renderDropdown.bind(this);
+    this.renderMessager = this.renderMessager.bind(this);
   }
 
   onInputChange(event) {
@@ -48,6 +49,7 @@ class MessageList extends Component {
   componentWillMount() {
     let conversationId = this.props.history.location.pathname.split("/")[2]
     this.props.fetchMesages({conversationId}, this.props.history);
+    this.props.fetchUsersForConversation({conversationId});
   }
 
   messageReceive(conversationId) {
@@ -80,8 +82,9 @@ class MessageList extends Component {
   renderList() {
     if (!this.props.messages) {
       return <div className="text-center">Loading...</div>
-    } else if (this.props.messages.length === 0 ) {
-      return <div className="text-center">This is the very beginning of your direct message history with...</div>
+    } else if (this.props.messages.length === 0 && this.props.users) {
+      let userNames = this.props.users.map(user => `@${user.userName}`).join(', ');
+      return <div className="text-center">This is the very beginning of your direct message history with {userNames}</div>
     } else {
       return this.props.messages.map((message) => {
         let date = new Date(message.createdAt);
@@ -99,25 +102,36 @@ class MessageList extends Component {
     }
   };
 
-  render() {
-    return (
-      <div className="container">
-        <ul className="message-list mt-5 mb-0 pt-3 pt-2 bg-light border">
-          {this.renderList()}
-        </ul>
+  renderMessager() {
+    if (this.props.users) {
+      let fullNames = this.props.users.map(user => `@${user.fullName}`).join(', ');
+      const placeholder = `Message ${fullNames}`;
+
+      return(
         <form onSubmit={this.onFormSubmit}>
           <div className="input-group">
             <div className="input-group-prepend">
               <button type="submit" className="btn btn-primary">+</button>
             </div>
             <input
-             placeholder="Message..."
+             placeholder={placeholder}
              className="form-control"
              value={this.state.term}
              onChange={this.onInputChange}
             />
           </div>
         </form>
+      )
+    }
+  }
+
+  render() {
+    return (
+      <div className="container">
+        <ul className="message-list mt-5 mb-0 pt-3 pt-2 bg-light border">
+          {this.renderList()}
+        </ul>
+        {this.renderMessager()}
       </div>
     )
   }
@@ -127,6 +141,7 @@ function mapStateToProps(state) {
   return {
     currentUser: state.auth.currentUser,
     messages: state.conversation.messages,
+    users: state.conversation.users
   }
 }
 

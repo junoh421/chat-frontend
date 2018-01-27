@@ -12,7 +12,8 @@
 - Axios
 
 ### Todo
-- Start testing
+- Refactoring and testing
 - Setup index route and fix home page
 - Upload photo, display profile photo
-- Display users on conversation
+- Update user's message
+- Deploy
