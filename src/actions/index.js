@@ -90,6 +90,15 @@ export const sendMessage = ({ content, userId, conversationId }, history) => {
   }
 }
 
+export const updateMessage = ({ messageId, content, conversationId }) => {
+  return function(dispatch) {
+    axios.put(`${ROOT_URL}/message/${messageId}`, { content })
+    .then( response => {
+      dispatch({ type: 'FETCH_MESSAGES', payload: response.data });
+    })
+  }
+}
+
 export const fetchMesages = ({conversationId}, history) => {
   return function(dispatch) {
     axios.get(`${ROOT_URL}/messages/${conversationId}`)

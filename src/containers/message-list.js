@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
+import MessageEditor from './message-editor'
 import $ from 'jquery';
 import openSocket from 'socket.io-client';
 const socket = openSocket('http://localhost:8000');
@@ -9,7 +10,10 @@ class MessageList extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { term: ''} ;
+    this.state = {
+      term: '',
+      editMessageId: null
+    } ;
     this.onInputChange = this.onInputChange.bind(this);
     this.onFormSubmit = this.onFormSubmit.bind(this);
     this.messageReceive = this.messageReceive.bind(this);
@@ -90,16 +94,14 @@ class MessageList extends Component {
 
   renderMessageContent(message) {
     let date = new Date(message.createdAt);
+    let conversationId = this.props.history.location.pathname.split("/")[2]
 
     if (this.state.editMessageId === message._id) {
       return (
-        <div className="input-group-append mr-3 mb-3">
-          <input
-           defaultValue={message.content}
-           className="form-control"
-          />
-          <button type="submit" className="btn btn-primary btn-sm">Save Changes</button>
-        </div>
+        <MessageEditor
+         message={message}
+         conversationId={conversationId}
+         />
       )
     } else {
       return(
