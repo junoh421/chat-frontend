@@ -9,17 +9,14 @@ class MessageList extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      term: '',
-      editMessageId: null
-    };
+    this.state = { term: ''} ;
     this.onInputChange = this.onInputChange.bind(this);
     this.onFormSubmit = this.onFormSubmit.bind(this);
     this.messageReceive = this.messageReceive.bind(this);
-    this.renderMessageContent = this.renderMessageContent.bind(this);
     this.renderDropdown = this.renderDropdown.bind(this);
     this.renderMessager = this.renderMessager.bind(this);
     this.editMessage = this.editMessage.bind(this);
+    this.renderMessageContent = this.renderMessageContent.bind(this);
   }
 
   onInputChange(event) {
@@ -27,7 +24,6 @@ class MessageList extends Component {
   }
 
   editMessage({message}) {
-    debugger;
     this.setState({ editMessageId: message._id})
   }
 
@@ -79,9 +75,8 @@ class MessageList extends Component {
           </button>
           <div className="dropdown-menu">
             <button className="dropdown-item"
-              onClick={() => this.editMessage({message})}
-            >
-            Edit
+              onClick={() => this.editMessage({message})}>
+              Edit
             </button>
             <button className="btn btn-danger dropdown-item"
              onClick={() => this.props.deleteMessage({messageId, conversationId}, this.props.history)}>
@@ -97,15 +92,21 @@ class MessageList extends Component {
     let date = new Date(message.createdAt);
 
     if (this.state.editMessageId === message._id) {
-      <div className="message-content">
-        <h6 className="d-inline font-weight-bold">{message.user.userName}</h6>
-        <p> testing </p>
-      </div>
+      return (
+        <div className="input-group-append mr-3 mb-3">
+          <input
+           defaultValue={message.content}
+           className="form-control"
+          />
+          <button type="submit" className="btn btn-primary btn-sm">Save Changes</button>
+        </div>
+      )
     } else {
       return(
         <div className="message-content">
           <h6 className="d-inline font-weight-bold">{message.user.userName}</h6>
           <h6 className="d-inline"> {date.toLocaleDateString()} @ {date.toLocaleTimeString()}</h6>
+          {this.renderDropdown(message)}
           <p> {message.content} </p>
         </div>
       )
@@ -113,7 +114,6 @@ class MessageList extends Component {
   }
 
   renderList() {
-    debugger;
     if (!this.props.messages) {
       return <div className="text-center">Loading...</div>
     } else if (this.props.messages.length === 0 && this.props.users) {
@@ -126,7 +126,6 @@ class MessageList extends Component {
             <div className="message-item media">
               <div className="media-body">
                 {this.renderMessageContent(message)}
-                {this.renderDropdown(message)}
               </div>
             </div>
           </div>
