@@ -15,5 +15,5 @@
 - Refactoring and testing
 - Setup index route and fix home page
 - Upload photo, display profile photo
-- Update user's message
+- Update user's message (Add cancel button and fix lag)
 - Deploy
