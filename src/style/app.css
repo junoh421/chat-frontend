@@ -69,3 +69,8 @@ form a {
 .message-item:hover .message-actions button {
   display: inline-block;
 }
+
+.profile-image {
+  max-height: 100px;
+  max-width: 100px;
+}

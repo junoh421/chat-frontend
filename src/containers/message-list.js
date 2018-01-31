@@ -145,11 +145,14 @@ class MessageList extends Component {
       )
     } else {
       return(
-        <div className="message-content">
-          <h6 className="d-inline font-weight-bold">{message.user.userName}</h6>
-          <h6 className="d-inline"> {date.toLocaleDateString()} @ {date.toLocaleTimeString()}</h6>
-          {this.renderDropdown(message)}
-          <p> {message.content} </p>
+        <div className="message-content media mb-3">
+          <img className="d-inline profile-image mr-2" alt="profile" src={ require('../images/user_icon.jpg') }/>
+          <div className="media-body">
+            {this.renderDropdown(message)}
+            <h5 className="d-inline mt-0">{message.user.fullName}</h5>
+            <h6 className="d-inline"> {date.toLocaleTimeString()} </h6>
+            <p> {message.content} </p>
+          </div>
         </div>
       )
     }
