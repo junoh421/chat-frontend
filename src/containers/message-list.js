@@ -24,6 +24,7 @@ class MessageList extends Component {
     this.onMessageContent = this.onMessageContent.bind(this);
     this.onUpdateMessage = this.onUpdateMessage.bind(this);
     this.renderMessageEditor = this.renderMessageEditor.bind(this);
+    this.deleteMessage = this.deleteMessage.bind(this);
   }
 
   componentDidMount() {
@@ -55,6 +56,13 @@ class MessageList extends Component {
 
   editMessage({message}) {
     this.setState({ editMessageId: message._id})
+  }
+
+  deleteMessage({messageId, conversationId}) {
+
+
+    this.props.deleteMessage({messageId, conversationId}, this.props.history)
+    socket.emit('send:message', conversationId);
   }
 
   onFormSubmit(event) {
@@ -125,7 +133,7 @@ class MessageList extends Component {
               Edit
             </button>
             <button className="btn btn-danger dropdown-item"
-             onClick={() => this.props.deleteMessage({messageId, conversationId}, this.props.history)}>
+             onClick={() => this.deleteMessage({messageId, conversationId})}>
             Delete
             </button>
           </div>
