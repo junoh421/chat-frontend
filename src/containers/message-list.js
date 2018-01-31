@@ -170,7 +170,8 @@ class MessageList extends Component {
     if (!this.props.messages) {
       return <div className="text-center">Loading...</div>
     } else if (this.props.messages.length === 0 && this.props.users) {
-      let userNames = this.props.users.map(user => `@${user.userName}`).join(', ');
+      let userNames = this.props.users.filter( user => user._id !== this.props.currentUser).map(user => `@${user.userName}`).join(', ');
+
       return <div className="text-center">This is the very beginning of your direct message history with {userNames}</div>
     } else {
       return this.props.messages.map((message) => {
@@ -189,7 +190,7 @@ class MessageList extends Component {
 
   renderMessager() {
     if (this.props.users) {
-      let fullNames = this.props.users.map(user => `@${user.fullName}`).join(', ');
+      let fullNames = this.props.users.filter( user => user._id !== this.props.currentUser).map(user => `@${user.fullName}`).join(', ');
       const placeholder = `Message ${fullNames}`;
 
       return(
