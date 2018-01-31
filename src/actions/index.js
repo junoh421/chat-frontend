@@ -85,7 +85,7 @@ export const sendMessage = ({ content, userId, conversationId }, history) => {
   return function(dispatch) {
     axios.post(`${ROOT_URL}/message`, { content, userId, conversationId })
     .then( response => {
-      dispatch(fetchMesages({conversationId}, history));
+      dispatch(fetchMesages({conversationId}));
     })
   }
 }
@@ -104,7 +104,6 @@ export const fetchMesages = ({conversationId}, history) => {
     axios.get(`${ROOT_URL}/messages/${conversationId}`)
     .then( response => {
       dispatch({ type: 'FETCH_MESSAGES', payload: response.data });
-      history.push(`/messageboard/${conversationId}`)
     })
   }
 }
@@ -164,7 +163,8 @@ export const startConversation = ({recipients}, history) => {
     axios.post(`${ROOT_URL}/conversation`, {recipients})
     .then( response => {
       let conversationId = response.data.conversation._id;
-      dispatch(fetchMesages({conversationId}, history))
+      history.push(`/messageboard/${conversationId}`)
+      dispatch(fetchMesages({conversationId}))
     })
   }
 }
@@ -173,7 +173,7 @@ export const deleteMessage = ({messageId, conversationId}, history) => {
   return function(dispatch) {
     axios.delete(`${ROOT_URL}/message/${messageId}`)
     .then( response => {
-      dispatch(fetchMesages({conversationId}, history))
+      dispatch(fetchMesages({conversationId}))
     })
   }
 }

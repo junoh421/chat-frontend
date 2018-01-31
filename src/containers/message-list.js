@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
-import MessageEditor from './message-editor'
 import $ from 'jquery';
 import openSocket from 'socket.io-client';
 const socket = openSocket('http://localhost:8000');
@@ -12,7 +11,8 @@ class MessageList extends Component {
 
     this.state = {
       term: '',
-      editMessageId: null
+      editMessageId: null,
+      content: ''
     } ;
     this.onInputChange = this.onInputChange.bind(this);
     this.onFormSubmit = this.onFormSubmit.bind(this);
@@ -21,10 +21,36 @@ class MessageList extends Component {
     this.renderMessager = this.renderMessager.bind(this);
     this.editMessage = this.editMessage.bind(this);
     this.renderMessageContent = this.renderMessageContent.bind(this);
+    this.onMessageContent = this.onMessageContent.bind(this);
+    this.onUpdateMessage = this.onUpdateMessage.bind(this);
+    this.renderMessageEditor = this.renderMessageEditor.bind(this);
+  }
+
+  componentDidMount() {
+    $( document ).ready(function() {
+      $('.message-list').scrollTop($('.message-list')[0].scrollHeight);
+    });
+  }
+
+  componentDidUpdate() {
+    socket.on('receieve:message', this.messageReceive);
+    $( document ).ready(function() {
+      $('.message-list').scrollTop($('.message-list')[0].scrollHeight);
+    });
+  }
+
+  componentWillMount() {
+    let conversationId = this.props.history.location.pathname.split("/")[2]
+    this.props.fetchMesages({conversationId}, this.props.history);
+    this.props.fetchUsersForConversation({conversationId});
   }
 
   onInputChange(event) {
     this.setState({ term: event.target.value})
+  }
+
+  onMessageContent(event) {
+    this.setState({ content: event.target.value})
   }
 
   editMessage({message}) {
@@ -42,29 +68,45 @@ class MessageList extends Component {
     socket.emit('send:message', conversationId);
   }
 
-  componentDidMount() {
-    $( document ).ready(function() {
-      $('.message-list').scrollTop($('.message-list')[0].scrollHeight);
-    });
-  }
-
-  componentDidUpdate() {
-    socket.on('receieve:message', this.messageReceive);
-    $( document ).ready(function() {
-      $('.message-list').scrollTop($('.message-list')[0].scrollHeight);
-    });
-  }
-
-
-  componentWillMount() {
-    let conversationId = this.props.history.location.pathname.split("/")[2]
-    this.props.fetchMesages({conversationId}, this.props.history);
-    this.props.fetchUsersForConversation({conversationId});
-  }
-
   messageReceive(conversationId) {
     this.props.fetchMesages({conversationId}, this.props.history);
   }
+
+  onUpdateMessage(event) {
+    event.preventDefault();
+    let conversationId = this.props.history.location.pathname.split("/")[2]
+    let messageId = this.state.editMessageId;
+    let content = this.state.content;
+
+    this.props.updateMessage({messageId, content, conversationId});
+    this.setState( {editMessageId: ''} );
+    socket.emit('send:message', conversationId);
+  }
+
+  renderMessageEditor(message) {
+    return (
+      <form className="mb-2 mr-2" onSubmit={this.onUpdateMessage}>
+        <input
+         defaultValue={message.content}
+         onChange={this.onMessageContent}
+         className="form-control mb-2"
+        />
+        <button
+          className="btn btn-success mr-1"
+          type="submit"
+        >
+          Save Changes
+        </button>
+        <button
+          className="btn btn-secondary"
+          onClick={() => this.setState( {editMessageId: ''} )}
+        >
+          Cancel
+        </button>
+      </form>
+    )
+  }
+
 
   renderDropdown(message) {
     let messageId = message._id;
@@ -94,14 +136,12 @@ class MessageList extends Component {
 
   renderMessageContent(message) {
     let date = new Date(message.createdAt);
-    let conversationId = this.props.history.location.pathname.split("/")[2]
 
     if (this.state.editMessageId === message._id) {
       return (
-        <MessageEditor
-         message={message}
-         conversationId={conversationId}
-         />
+        <div className="message-content">
+          {this.renderMessageEditor(message)}
+        </div>
       )
     } else {
       return(
