@@ -59,8 +59,6 @@ class MessageList extends Component {
   }
 
   deleteMessage({messageId, conversationId}) {
-
-
     this.props.deleteMessage({messageId, conversationId}, this.props.history)
     socket.emit('send:message', conversationId);
   }
@@ -77,7 +75,7 @@ class MessageList extends Component {
   }
 
   messageReceive(conversationId) {
-    this.props.fetchMesages({conversationId}, this.props.history);
+    // this.props.fetchMesages({conversationId}, this.props.history);
   }
 
   onUpdateMessage(event) {
