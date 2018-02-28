@@ -16,7 +16,8 @@ class MessageList extends Component {
     } ;
     this.onInputChange = this.onInputChange.bind(this);
     this.onFormSubmit = this.onFormSubmit.bind(this);
-    this.messageReceive = this.messageReceive.bind(this);
+    this.messageDelete = this.messageDelete.bind(this);
+    this.messageUpdate = this.messageUpdate.bind(this);
     this.renderDropdown = this.renderDropdown.bind(this);
     this.renderMessager = this.renderMessager.bind(this);
     this.editMessage = this.editMessage.bind(this);
@@ -34,10 +35,11 @@ class MessageList extends Component {
   }
 
   componentDidUpdate() {
-    socket.on('receieve:message', this.messageReceive);
-    $( document ).ready(function() {
-      $('.message-list').scrollTop($('.message-list')[0].scrollHeight);
-    });
+    socket.on('deleted:message', this.messageDelete);
+    socket.on('updated:message', this.messageUpdate);
+    // $( document ).ready(function() {
+    //   $('.message-list').scrollTop($('.message-list')[0].scrollHeight);
+    // });
   }
 
   componentWillMount() {
@@ -60,7 +62,6 @@ class MessageList extends Component {
 
   deleteMessage({messageId, conversationId}) {
     this.props.deleteMessage({messageId, conversationId}, this.props.history)
-    socket.emit('send:message', conversationId);
   }
 
   onFormSubmit(event) {
@@ -74,8 +75,15 @@ class MessageList extends Component {
     socket.emit('send:message', conversationId);
   }
 
-  messageReceive(conversationId) {
-    // this.props.fetchMesages({conversationId}, this.props.history);
+  messageDelete(messageId) {
+    $(`.message-${messageId}`).remove();
+  }
+
+  messageUpdate(message) {
+    let messageId = message.data._id;
+    let content = message.data.content;
+
+    $(`.message-${messageId}`).find('.message-content').find('.content').html(content)
   }
 
   onUpdateMessage(event) {
@@ -156,8 +164,8 @@ class MessageList extends Component {
           <div className="media-body">
             {this.renderDropdown(message)}
             <h5 className="d-inline mt-0">{message.user.fullName}</h5>
-            <h6 className="d-inline"> {date.toLocaleTimeString()} </h6>
-            <p> {message.content} </p>
+            <h6 className="timestamp d-inline"> {date.toLocaleTimeString()} </h6>
+            <p className="content"> {message.content} </p>
           </div>
         </div>
       )
@@ -225,6 +233,7 @@ function mapStateToProps(state) {
   return {
     currentUser: state.auth.currentUser,
     messages: state.conversation.messages,
+    deletedMessageId: state.conversation.deletedMessageId,
     users: state.conversation.users
   }
 }

@@ -1,5 +1,7 @@
 import axios from 'axios';
+import openSocket from 'socket.io-client';
 const ROOT_URL = 'http://localhost:8000/api';
+const socket = openSocket('http://localhost:8000');
 
 export const signInUser = ({ email, password }, history) => {
   return function(dispatch) {
@@ -94,7 +96,9 @@ export const updateMessage = ({ messageId, content, conversationId }) => {
   return function(dispatch) {
     axios.put(`${ROOT_URL}/message/${messageId}`, { content })
     .then( response => {
-      // dispatch({ type: 'FETCH_MESSAGES', payload: response.data });
+      socket.emit('update:message', {
+        data: response.data.updatedMessage
+      });
     })
   }
 }
@@ -103,8 +107,7 @@ export const deleteMessage = ({messageId, conversationId}, history) => {
   return function(dispatch) {
     axios.delete(`${ROOT_URL}/message/${messageId}`)
     .then( response => {
-      debugger;
-      // dispatch(fetchMesages({conversationId}))
+      socket.emit('delete:message', response.data.id);
     })
   }
 }
