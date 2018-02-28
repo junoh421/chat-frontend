@@ -87,7 +87,9 @@ export const sendMessage = ({ content, userId, conversationId }, history) => {
   return function(dispatch) {
     axios.post(`${ROOT_URL}/message`, { content, userId, conversationId })
     .then( response => {
-      // dispatch(fetchMesages({conversationId}));
+      socket.emit('send:message', {
+        data: response.data.reply
+      });
     })
   }
 }

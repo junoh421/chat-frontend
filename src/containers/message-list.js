@@ -16,6 +16,7 @@ class MessageList extends Component {
     } ;
     this.onInputChange = this.onInputChange.bind(this);
     this.onFormSubmit = this.onFormSubmit.bind(this);
+    this.messageRead = this.messageRead.bind(this);
     this.messageDelete = this.messageDelete.bind(this);
     this.messageUpdate = this.messageUpdate.bind(this);
     this.renderDropdown = this.renderDropdown.bind(this);
@@ -35,11 +36,13 @@ class MessageList extends Component {
   }
 
   componentDidUpdate() {
+    socket.on('sent:message', this.messageRead);
     socket.on('deleted:message', this.messageDelete);
     socket.on('updated:message', this.messageUpdate);
-    // $( document ).ready(function() {
-    //   $('.message-list').scrollTop($('.message-list')[0].scrollHeight);
-    // });
+    socket.on('')
+    $( document ).ready(function() {
+      $('.message-list').scrollTop($('.message-list')[0].scrollHeight);
+    });
   }
 
   componentWillMount() {
@@ -72,7 +75,12 @@ class MessageList extends Component {
 
     this.props.sendMessage({content, userId, conversationId}, this.props.history);
     this.setState( {term: ''} );
-    socket.emit('send:message', conversationId);
+  }
+
+  messageRead(message) {
+    let conversationId = message.data.conversationId;
+
+    this.props.fetchMesages({conversationId}, this.props.history);
   }
 
   messageDelete(messageId) {
@@ -83,7 +91,7 @@ class MessageList extends Component {
     let messageId = message.data._id;
     let content = message.data.content;
 
-    $(`.message-${messageId}`).find('.message-content').find('.content').html(content)
+    $(`.message-${messageId}`).find('.message-content').find('.content').html(content + ' (edited)')
   }
 
   onUpdateMessage(event) {
