@@ -84,7 +84,7 @@ class MessageList extends Component {
   }
 
   messageDelete(messageId) {
-    $(`.message-${messageId}`).remove();
+    $(`.message-${messageId}`).hide();
   }
 
   messageUpdate(message) {
@@ -102,7 +102,6 @@ class MessageList extends Component {
 
     this.props.updateMessage({messageId, content, conversationId});
     this.setState( {editMessageId: ''} );
-    socket.emit('send:message', conversationId);
   }
 
   renderMessageEditor(message) {
