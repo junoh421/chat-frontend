@@ -1,7 +1,5 @@
 import axios from 'axios';
-import openSocket from 'socket.io-client';
 const ROOT_URL = 'http://localhost:8000/api';
-const socket = openSocket('http://localhost:8000');
 
 export const signInUser = ({ email, password }, history) => {
   return function(dispatch) {
@@ -69,50 +67,36 @@ export const usersList = (users) => {
   }
 }
 
-export const uploadSuccess = (data) => {
-  return {
-    type: 'UPLOAD_DOCUMENT_SUCCESS',
-    data
-  };
-}
-
-export const uploadFail = (error) => {
-  return {
-    type: 'UPLOAD_DOCUMENT_FAIL',
-    error
-  };
-}
-
-export const sendMessage = ({ content, userId, conversationId }, history) => {
-  return function(dispatch) {
-    axios.post(`${ROOT_URL}/message`, { content, userId, conversationId })
-    .then( response => {
-      socket.emit('send:message', {
-        data: response.data.reply
-      });
-    })
-  }
-}
-
-export const updateMessage = ({ messageId, content, conversationId }) => {
-  return function(dispatch) {
-    axios.put(`${ROOT_URL}/message/${messageId}`, { content })
-    .then( response => {
-      socket.emit('update:message', {
-        data: response.data.updatedMessage
-      });
-    })
-  }
-}
-
-export const deleteMessage = ({messageId, conversationId}, history) => {
-  return function(dispatch) {
-    axios.delete(`${ROOT_URL}/message/${messageId}`)
-    .then( response => {
-      socket.emit('delete:message', response.data.id);
-    })
-  }
-}
+// export const sendMessage = ({ content, userId, conversationId }, history) => {
+//   return function(dispatch) {
+//     axios.post(`${ROOT_URL}/message`, { content, userId, conversationId })
+//     .then( response => {
+//       socket.emit('send:message', {
+//         data: response.data.reply
+//       });
+//     })
+//   }
+// }
+//
+// export const updateMessage = ({ messageId, content, conversationId }) => {
+//   return function(dispatch) {
+//     axios.put(`${ROOT_URL}/message/${messageId}`, { content })
+//     .then( response => {
+//       socket.emit('update:message', {
+//         data: response.data.updatedMessage
+//       });
+//     })
+//   }
+// }
+//
+// export const deleteMessage = ({messageId, conversationId}, history) => {
+//   return function(dispatch) {
+//     axios.delete(`${ROOT_URL}/message/${messageId}`)
+//     .then( response => {
+//       socket.emit('delete:message', response.data.id);
+//     })
+//   }
+// }
 
 export const fetchMesages = ({conversationId}, history) => {
   return function(dispatch) {
@@ -180,18 +164,6 @@ export const startConversation = ({recipients}, history) => {
       let conversationId = response.data.conversation._id;
       history.push(`/messageboard/${conversationId}`)
       dispatch(fetchMesages({conversationId}))
-    })
-  }
-}
-
-export const uploadPhoto = ({photo}) => {
-  return function(dispatch) {
-    axios.post(`${ROOT_URL}/profile/upload`, {photo})
-    .then( response => {
-      dispatch(uploadSuccess(response))
-    })
-    .catch( error => {
-      dispatch(uploadFail(error));
     })
   }
 }

@@ -63,8 +63,26 @@ class MessageList extends Component {
     this.setState({ editMessageId: message._id})
   }
 
+  onUpdateMessage(event) {
+    event.preventDefault();
+    let conversationId = this.props.history.location.pathname.split("/")[2]
+    let messageId = this.state.editMessageId;
+    let content = this.state.content;
+
+    socket.emit('update:message', {
+      messageId: messageId,
+      content: content,
+      conversationId: conversationId,
+    });
+
+    this.setState( {editMessageId: ''} );
+  }
+
   deleteMessage({messageId, conversationId}) {
-    this.props.deleteMessage({messageId, conversationId}, this.props.history)
+    socket.emit('delete:message', {
+      messageId: messageId,
+      conversationId: conversationId
+    });
   }
 
   onFormSubmit(event) {
@@ -72,6 +90,10 @@ class MessageList extends Component {
     let userId = this.props.currentUser;
     let content = this.state.term;
     let conversationId = this.props.history.location.pathname.split("/")[2];
+
+    // socket.emit('send:message', {
+    //   data: response.data.reply
+    // });
 
     this.props.sendMessage({content, userId, conversationId}, this.props.history);
     this.setState( {term: ''} );
@@ -83,25 +105,12 @@ class MessageList extends Component {
     this.props.fetchMesages({conversationId}, this.props.history);
   }
 
-  messageDelete(messageId) {
+  messageDelete({messageId, conversationId}) {
     $(`.message-${messageId}`).hide();
   }
 
-  messageUpdate(message) {
-    let messageId = message.data._id;
-    let content = message.data.content;
-
+  messageUpdate({messageId, content, conversationId}) {
     $(`.message-${messageId}`).find('.message-content').find('.content').html(content + ' (edited)')
-  }
-
-  onUpdateMessage(event) {
-    event.preventDefault();
-    let conversationId = this.props.history.location.pathname.split("/")[2]
-    let messageId = this.state.editMessageId;
-    let content = this.state.content;
-
-    this.props.updateMessage({messageId, content, conversationId});
-    this.setState( {editMessageId: ''} );
   }
 
   renderMessageEditor(message) {
