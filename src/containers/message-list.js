@@ -12,11 +12,12 @@ class MessageList extends Component {
     this.state = {
       term: '',
       editMessageId: null,
-      content: ''
+      content: '',
+      messages: []
     } ;
     this.onInputChange = this.onInputChange.bind(this);
     this.onFormSubmit = this.onFormSubmit.bind(this);
-    this.messageRead = this.messageRead.bind(this);
+    this.messageSent = this.messageSent.bind(this);
     this.messageDelete = this.messageDelete.bind(this);
     this.messageUpdate = this.messageUpdate.bind(this);
     this.renderDropdown = this.renderDropdown.bind(this);
@@ -27,6 +28,7 @@ class MessageList extends Component {
     this.onUpdateMessage = this.onUpdateMessage.bind(this);
     this.renderMessageEditor = this.renderMessageEditor.bind(this);
     this.deleteMessage = this.deleteMessage.bind(this);
+    this.renderMessageContainer = this.renderMessageContainer.bind(this);
   }
 
   componentDidMount() {
@@ -36,10 +38,9 @@ class MessageList extends Component {
   }
 
   componentDidUpdate() {
-    socket.on('sent:message', this.messageRead);
+    socket.on('sent:message', this.messageSent);
     socket.on('deleted:message', this.messageDelete);
     socket.on('updated:message', this.messageUpdate);
-    socket.on('')
     $( document ).ready(function() {
       $('.message-list').scrollTop($('.message-list')[0].scrollHeight);
     });
@@ -91,26 +92,28 @@ class MessageList extends Component {
     let content = this.state.term;
     let conversationId = this.props.history.location.pathname.split("/")[2];
 
-    // socket.emit('send:message', {
-    //   data: response.data.reply
-    // });
+    socket.emit('send:message', {
+      content: content,
+      user: {
+        _id: userId
+      },
+      conversationId: conversationId
+    });
 
-    this.props.sendMessage({content, userId, conversationId}, this.props.history);
     this.setState( {term: ''} );
   }
 
-  messageRead(message) {
-    let conversationId = message.data.conversationId;
-
-    this.props.fetchMesages({conversationId}, this.props.history);
+  messageSent(message) {
+    // let messageContainer = this.renderMessageContainer(message);
+    // $('.message-list')[0].append(messageContainer.props)
   }
 
   messageDelete({messageId, conversationId}) {
-    $(`.message-${messageId}`).hide();
+    $(`.message-container-${messageId}`).hide();
   }
 
   messageUpdate({messageId, content, conversationId}) {
-    $(`.message-${messageId}`).find('.message-content').find('.content').html(content + ' (edited)')
+    $(`.message-container-${messageId}`).find('.message-content').find('.content').html(content + ' (edited)')
   }
 
   renderMessageEditor(message) {
@@ -164,6 +167,16 @@ class MessageList extends Component {
     }
   }
 
+  renderMessageContainer(message) {
+    return(
+      <div className="message-item media">
+        <div className="media-body">
+          {this.renderMessageContent(message)}
+        </div>
+      </div>
+    )
+  }
+
   renderMessageContent(message) {
     let date = new Date(message.createdAt);
 
@@ -198,12 +211,8 @@ class MessageList extends Component {
     } else {
       return this.props.messages.map((message) => {
         return (
-          <div className={"message-" + message._id} key={message._id}>
-            <div className="message-item media">
-              <div className="media-body">
-                {this.renderMessageContent(message)}
-              </div>
-            </div>
+          <div className={"message-container-" + message._id} key={message._id}>
+            {this.renderMessageContainer(message)}
           </div>
         );
       });
