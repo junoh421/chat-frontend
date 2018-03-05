@@ -64,20 +64,12 @@ class MessageList extends Component {
     let messageId = this.state.editMessageId;
     let content = this.state.content;
 
-    socket.emit('update:message', {
-      messageId: messageId,
-      content: content,
-      conversationId: conversationId,
-    });
-
+    this.props.updateMessage({messageId, content, conversationId});
     this.setState( {editMessageId: ''} );
   }
 
   deleteMessage({messageId, conversationId}) {
-    socket.emit('delete:message', {
-      messageId: messageId,
-      conversationId: conversationId
-    });
+    this.props.deleteMessage({messageId, conversationId}, this.props.history);
   }
 
   onFormSubmit(event) {
@@ -86,28 +78,19 @@ class MessageList extends Component {
     let content = this.state.term;
     let conversationId = this.props.history.location.pathname.split("/")[2];
 
-    socket.emit('send:message', {
-      content: content,
-      user: {
-        _id: userId,
-        userName: 'Bob'
-      },
-      _id: 1,
-      conversationId: conversationId
-    });
-
+    this.props.sendMessage({content, userId, conversationId}, this.props.history);
     this.setState( {term: ''} );
   }
 
-  messageSent({ content, user, _id, conversationId }) {
-    this.setState({ messages: [...this.state.messages, {content, user, _id, conversationId} ] });
+  messageSent({message}) {
+    this.setState({ messages: [...this.state.messages, message ] });
   }
 
-  messageDelete({messageId, conversationId}) {
+  messageDelete({messageId}) {
     $(`.message-container-${messageId}`).hide();
   }
 
-  messageUpdate({messageId, content, conversationId}) {
+  messageUpdate({messageId, content}) {
     $(`.message-container-${messageId}`).find('.message-content').find('.content').html(content + ' (edited)')
   }
 
