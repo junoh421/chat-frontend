@@ -35,15 +35,15 @@ class MessageList extends Component {
     socket.on('sent:message', this.messageSent);
     socket.on('deleted:message', this.messageDelete);
     socket.on('updated:message', this.messageUpdate);
-    $( document ).ready(function() {
-      $('.message-list').scrollTop($('.message-list')[0].scrollHeight);
-    });
   }
 
   componentWillMount() {
     let conversationId = this.props.history.location.pathname.split("/")[2]
     this.props.fetchMesages({conversationId}, this.props.history);
     // this.props.fetchUsersForConversation({conversationId});
+    $( document ).ready(function() {
+      $('.message-list').scrollTop($('.message-list')[0].scrollHeight);
+    });
   }
 
   onInputChange(event) {
@@ -172,7 +172,7 @@ class MessageList extends Component {
   renderList() {
     if (!this.props.messages) {
       return <div className="text-center">Loading...</div>
-    } else if (this.props.messages.length === 0 && this.props.users) {
+    } else if (this.props.messages.length === 0 && this.state.messages.length === 0 && this.props.users) {
       let userNames = this.props.users.filter( user => user._id !== this.props.currentUser).map(user => `@${user.userName}`).join(', ');
 
       return <div className="text-center">This is the very beginning of your direct message history with {userNames}</div>
@@ -194,9 +194,9 @@ class MessageList extends Component {
   };
 
   renderMessager() {
-    // if (this.props.users) {
-      // let fullNames = this.props.users.filter( user => user._id !== this.props.currentUser).map(user => `@${user.fullName}`).join(', ');
-      // const placeholder = `Message ${fullNames}`;
+    if (this.props.users) {
+      let fullNames = this.props.users.filter( user => user._id !== this.props.currentUser).map(user => `@${user.fullName}`).join(', ');
+      const placeholder = `Message ${fullNames}`;
 
       return(
         <form onSubmit={this.onFormSubmit}>
@@ -208,11 +208,12 @@ class MessageList extends Component {
              className="form-control"
              value={this.state.term}
              onChange={this.onInputChange}
+             placeholder={placeholder}
             />
           </div>
         </form>
       )
-    // }
+    }
   }
 
   render() {

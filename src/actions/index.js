@@ -107,7 +107,7 @@ export const fetchMesages = ({conversationId}, history) => {
   return function(dispatch) {
     axios.get(`${ROOT_URL}/messages/${conversationId}`)
     .then( response => {
-      dispatch({ type: 'FETCH_MESSAGES', payload: response.data });
+      dispatch({ type: 'FETCH_MESSAGES_AND_USERS', payload: response.data });
     })
   }
 }
