@@ -13,8 +13,9 @@ class MessageList extends Component {
       term: '',
       editMessageId: null,
       content: '',
-      messages: []
-    } ;
+      messages: [],
+    };
+
     this.onInputChange = this.onInputChange.bind(this);
     this.onFormSubmit = this.onFormSubmit.bind(this);
     this.messageSent = this.messageSent.bind(this);
@@ -28,16 +29,9 @@ class MessageList extends Component {
     this.onUpdateMessage = this.onUpdateMessage.bind(this);
     this.renderMessageEditor = this.renderMessageEditor.bind(this);
     this.deleteMessage = this.deleteMessage.bind(this);
-    this.renderMessageContainer = this.renderMessageContainer.bind(this);
   }
 
-  componentDidMount() {
-    $( document ).ready(function() {
-      $('.message-list').scrollTop($('.message-list')[0].scrollHeight);
-    });
-  }
-
-  componentDidUpdate() {
+  componentWillReceiveProps() {
     socket.on('sent:message', this.messageSent);
     socket.on('deleted:message', this.messageDelete);
     socket.on('updated:message', this.messageUpdate);
@@ -49,7 +43,7 @@ class MessageList extends Component {
   componentWillMount() {
     let conversationId = this.props.history.location.pathname.split("/")[2]
     this.props.fetchMesages({conversationId}, this.props.history);
-    this.props.fetchUsersForConversation({conversationId});
+    // this.props.fetchUsersForConversation({conversationId});
   }
 
   onInputChange(event) {
@@ -95,17 +89,18 @@ class MessageList extends Component {
     socket.emit('send:message', {
       content: content,
       user: {
-        _id: userId
+        _id: userId,
+        userName: 'Bob'
       },
+      _id: 1,
       conversationId: conversationId
     });
 
     this.setState( {term: ''} );
   }
 
-  messageSent(message) {
-    // let messageContainer = this.renderMessageContainer(message);
-    // $('.message-list')[0].append(messageContainer.props)
+  messageSent({ content, user, _id, conversationId }) {
+    this.setState({ messages: [...this.state.messages, {content, user, _id, conversationId} ] });
   }
 
   messageDelete({messageId, conversationId}) {
@@ -167,16 +162,6 @@ class MessageList extends Component {
     }
   }
 
-  renderMessageContainer(message) {
-    return(
-      <div className="message-item media">
-        <div className="media-body">
-          {this.renderMessageContent(message)}
-        </div>
-      </div>
-    )
-  }
-
   renderMessageContent(message) {
     let date = new Date(message.createdAt);
 
@@ -209,10 +194,16 @@ class MessageList extends Component {
 
       return <div className="text-center">This is the very beginning of your direct message history with {userNames}</div>
     } else {
-      return this.props.messages.map((message) => {
+      let allMessages = this.props.messages.concat(this.state.messages);
+
+      return allMessages.map((message) => {
         return (
           <div className={"message-container-" + message._id} key={message._id}>
-            {this.renderMessageContainer(message)}
+            <div className="message-item media">
+              <div className="media-body">
+                {this.renderMessageContent(message)}
+              </div>
+            </div>
           </div>
         );
       });
@@ -220,9 +211,9 @@ class MessageList extends Component {
   };
 
   renderMessager() {
-    if (this.props.users) {
-      let fullNames = this.props.users.filter( user => user._id !== this.props.currentUser).map(user => `@${user.fullName}`).join(', ');
-      const placeholder = `Message ${fullNames}`;
+    // if (this.props.users) {
+      // let fullNames = this.props.users.filter( user => user._id !== this.props.currentUser).map(user => `@${user.fullName}`).join(', ');
+      // const placeholder = `Message ${fullNames}`;
 
       return(
         <form onSubmit={this.onFormSubmit}>
@@ -231,7 +222,6 @@ class MessageList extends Component {
               <button type="submit" className="btn btn-primary">+</button>
             </div>
             <input
-             placeholder={placeholder}
              className="form-control"
              value={this.state.term}
              onChange={this.onInputChange}
@@ -239,7 +229,7 @@ class MessageList extends Component {
           </div>
         </form>
       )
-    }
+    // }
   }
 
   render() {
