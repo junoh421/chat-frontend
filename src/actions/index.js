@@ -1,7 +1,7 @@
 import axios from 'axios';
 import openSocket from 'socket.io-client';
-const ROOT_URL = 'http://localhost:8000/api';
-const socket = openSocket('http://localhost:8000');
+const ROOT_URL = 'https://chatappbackend.herokuapp.com/api';
+const socket = openSocket('https://chatappbackend.herokuapp.com');
 
 export const signInUser = ({ email, password }, history) => {
   return function(dispatch) {
