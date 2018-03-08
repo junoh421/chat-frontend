@@ -40,6 +40,9 @@ class MessageList extends Component {
   componentWillMount() {
     let conversationId = this.props.history.location.pathname.split("/")[2]
     this.props.fetchMesages({conversationId}, this.props.history);
+  }
+
+  componentDidMount() {
     $( document ).ready(function() {
       $('.message-list').scrollTop($('.message-list')[0].scrollHeight);
     });
