@@ -1,7 +1,5 @@
 import axios from 'axios';
-import openSocket from 'socket.io-client';
 const ROOT_URL = 'http://localhost:8000/api';
-const socket = openSocket('http://localhost:8000');
 
 export const signInUser = ({ email, password }, history) => {
   return function(dispatch) {
@@ -15,8 +13,7 @@ export const signInUser = ({ email, password }, history) => {
       history.push('/conversations')
     })
     .catch( response => {
-      dispatch(authError("Incorrect email or password"))
-
+      dispatch({type: 'AUTH_ERROR', payload: "Incorrect email or password"})
     })
   }
 }
@@ -33,7 +30,7 @@ export const signUpUser = ({ email, password, userName, fullName }, history) => 
       history.push('/dashboard')
     })
     .catch( response => {
-      dispatch(authError(response.response.data.error))
+      dispatch({type: 'AUTH_ERROR', payload: response.response.data.error})
     })
   }
 }
@@ -42,64 +39,26 @@ export const signOutUser = () => {
   localStorage.removeItem('token');
   localStorage.removeItem('userId');
 
-  return {
-    type: 'UNAUTH_USER'
-  }
-
-}
-
-export const authError = (error) => {
-  return {
-    type: 'AUTH_ERROR',
-    payload: error
-  }
-}
-
-export const authSuccess = (success) => {
-  return {
-    type: 'AUTH_SUCCESS',
-    payload: success
-  }
-}
-
-export const usersList = (users) => {
-  return {
-    type: 'USERS_CONVERSATION',
-    payload: users
+  return function(dispatch) {
+    dispatch({ type: 'UNAUTH_USER' });
   }
 }
 
 export const sendMessage = ({ content, userId, conversationId }, history) => {
   return function(dispatch) {
-    axios.post(`${ROOT_URL}/message`, { content, userId, conversationId })
-    .then( response => {
-      socket.emit('send:message', {
-        message: response.data.reply[0]
-      });
-    })
+    axios.post(`${ROOT_URL}/message`, { content, userId, conversationId });
   }
 }
 
 export const updateMessage = ({ messageId, content, conversationId }) => {
   return function(dispatch) {
-    axios.put(`${ROOT_URL}/message/${messageId}`, { content })
-    .then( response => {
-      socket.emit('update:message', {
-        messageId: response.data.updatedMessage._id,
-        content: response.data.updatedMessage.content
-      });
-    })
+    axios.put(`${ROOT_URL}/message/${messageId}`, { content });
   }
 }
 
 export const deleteMessage = ({messageId, conversationId}, history) => {
   return function(dispatch) {
-    axios.delete(`${ROOT_URL}/message/${messageId}`)
-    .then( response => {
-      socket.emit('delete:message', {
-        messageId: response.data.id
-      });
-    })
+    axios.delete(`${ROOT_URL}/message/${messageId}`);
   }
 }
 
@@ -145,10 +104,10 @@ export const updateUser = ({id, email, password, userName, fullName }, history) 
     .then( response => {
       localStorage.setItem('userName', response.data.user.userName);
       dispatch({ type: 'AUTH_USER' });
-      dispatch(authSuccess(response.data.message));
+      dispatch({ type: 'AUTH_SUCCESS', payload: response.data.messages});
     })
     .catch( response => {
-      dispatch(authError(response.response.data.error))
+      dispatch({type: 'AUTH_ERROR', payload: response.response.data.error})
     })
   }
 }

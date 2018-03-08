@@ -40,7 +40,6 @@ class MessageList extends Component {
   componentWillMount() {
     let conversationId = this.props.history.location.pathname.split("/")[2]
     this.props.fetchMesages({conversationId}, this.props.history);
-    // this.props.fetchUsersForConversation({conversationId});
     $( document ).ready(function() {
       $('.message-list').scrollTop($('.message-list')[0].scrollHeight);
     });
@@ -83,7 +82,11 @@ class MessageList extends Component {
   }
 
   messageSent({message}) {
-    this.setState({ messages: [...this.state.messages, message ] });
+    let messageIds = this.state.messages.map(message => message._id) /// Not sure why this function gets called twice when new user starts writing a message
+
+    if (messageIds.includes(message[0]._id) === false) {
+      this.setState({ messages: [...this.state.messages, message[0] ] });
+    }
   }
 
   messageDelete({messageId}) {
