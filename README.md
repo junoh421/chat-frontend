@@ -1,3 +1,5 @@
+Live demo: [Chat Demo](http://chatappdemoversion.herokuapp.com)
+
 # Chat 1.0.0 (Frontend)
 - User can signup/signin
 - User can start a conversation by searching user
@@ -16,4 +18,7 @@
 ### Todo
 - Refactoring and testing
 - Setup index route and fix home page
-- Deploy
+- Fix scrolling
+- Add container with online users
+- Add avatars for profile picture
+- Fix css and stylize
