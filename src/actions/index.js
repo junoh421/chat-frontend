@@ -1,5 +1,5 @@
 import axios from 'axios';
-const ROOT_URL = 'http://localhost:8000/api';
+const ROOT_URL = 'https://chatappbackend.herokuapp.com/api';
 
 export const signInUser = ({ email, password }, history) => {
   return function(dispatch) {
