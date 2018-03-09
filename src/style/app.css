@@ -74,3 +74,9 @@ form a {
   max-height: 100px;
   max-width: 100px;
 }
+
+.online-status i {
+  color: #92959E;
+  border-radius: 50%;
+  padding-left: 5px;
+}

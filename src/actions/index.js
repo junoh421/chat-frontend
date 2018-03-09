@@ -1,5 +1,5 @@
 import axios from 'axios';
-const ROOT_URL = 'https://chatappbackend.herokuapp.com/api';
+const ROOT_URL = 'http://localhost:8000/api';
 
 export const signInUser = ({ email, password }, history) => {
   return function(dispatch) {
@@ -10,6 +10,7 @@ export const signInUser = ({ email, password }, history) => {
       localStorage.setItem('token', response.data.token);
 
       dispatch({ type: 'AUTH_USER' });
+      dispatch( {type: 'ONLINE_USERS', payload: response.data.user._id});
       history.push('/conversations')
     })
     .catch( response => {
@@ -27,6 +28,7 @@ export const signUpUser = ({ email, password, userName, fullName }, history) => 
       localStorage.setItem('token', response.data.token);
 
       dispatch({ type: 'AUTH_USER' });
+      dispatch( {type: 'ONLINE_USERS', payload: response.data.user._id});
       history.push('/conversations')
     })
     .catch( response => {
@@ -38,6 +40,7 @@ export const signUpUser = ({ email, password, userName, fullName }, history) => 
 export const signOutUser = () => {
   localStorage.removeItem('token');
   localStorage.removeItem('userId');
+  localStorage.removeItem('userName');
 
   return function(dispatch) {
     dispatch({ type: 'UNAUTH_USER' });

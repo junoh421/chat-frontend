@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 import $ from 'jquery';
-import openSocket from 'socket.io-client';
-const socket = openSocket('https://chatappbackend.herokuapp.com');
+import { socket } from '../socket'
 
 class MessageList extends Component {
   constructor(props) {

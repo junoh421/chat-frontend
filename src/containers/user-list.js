@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import * as actions from '../actions';
 import { connect } from 'react-redux';
 import $ from 'jquery';
+import 'font-awesome/css/font-awesome.min.css';
+import { socket } from '../socket'
 
 class UserList extends Component {
   constructor(props) {
@@ -15,11 +17,16 @@ class UserList extends Component {
     this.addToConversation = this.addToConversation.bind(this);
     this.renderUserList = this.renderUserList.bind(this);
     this.startConversation = this.startConversation.bind(this);
+    this.renderOnlineUsers = this.renderOnlineUsers.bind(this);
   }
 
   addToConversation({recipient}) {
     this.setState({ recipients: [...this.state.recipients, recipient] });
     $(`#user-${recipient.id}`).remove();
+  }
+
+  renderOnlineUsers({userId}) {
+    $(`#user-${userId}`).find('.online-status i').css('color', 'green')
   }
 
   startConversation(event) {
@@ -32,6 +39,10 @@ class UserList extends Component {
     this.props.fetchUsers();
   }
 
+  componentWillReceiveProps() {
+    socket.on('online:users', this.renderOnlineUsers);
+  }
+
   renderUserList() {
     let filteredUsers = this.props.allUsers.filter( user => user._id !== this.props.currentUser)
 
@@ -42,10 +53,13 @@ class UserList extends Component {
 
       return (
         <a className="list-group-item list-group-item-action"
-        id={"user-" + user._id}
-        onClick={() => this.addToConversation({recipient})}
-        key={user._id}>
-        {user.fullName} -  {user.userName}
+          id={"user-" + user._id}
+          onClick={() => this.addToConversation({recipient})}
+          key={user._id}>
+          {user.fullName} - {user.userName}
+          <span className="online-status">
+            <i className="fa fa-circle"> </i>
+          </span>
         </a>
       );
     });
