@@ -14,14 +14,10 @@ class UserList extends Component {
       users: [ ],
     };
 
-    let userId = this.props.currentUser;
-    socket.emit('user:login', {userId})
-
     this.addToConversation = this.addToConversation.bind(this);
     this.renderUserList = this.renderUserList.bind(this);
     this.startConversation = this.startConversation.bind(this);
-    this.addOnlineUser = this.addOnlineUser.bind(this);
-    this.removeOnlineUser = this.removeOnlineUser.bind(this);
+    this.setOnlineUsers = this.setOnlineUsers.bind(this);
   }
 
   addToConversation({recipient}) {
@@ -29,12 +25,18 @@ class UserList extends Component {
     $(`#user-${recipient.id}`).remove();
   }
 
-  addOnlineUser({userId}) {
-    $(`#user-${userId}`).find('.online-status i').css('color', 'green')
+  setOnlineUsers({users}) {
+    let removeDuplicateUsers = users.filter((x, i, a) => a.indexOf(x) === i);
+
+    removeDuplicateUsers.map((userId) => {
+      $(`#user-${userId.userId}`).find('.online-status i').css('color', 'green')
+    })
   }
 
-  removeOnlineUser({userId}) {
-    $(`#user-${userId}`).find('.online-status i').css('color', 'gray')
+  setOfflineUsers({userId}) {
+    if (userId) {
+      $(`#user-${userId.userId}`).find('.online-status i').css('color', 'grey')
+    }
   }
 
   startConversation(event) {
@@ -47,13 +49,13 @@ class UserList extends Component {
     this.props.fetchUsers();
   }
 
-  componentWillUpdate() {
-    socket.on('online:user', this.addOnlineUser);
-    socket.on('offline:user', this.offlineUser)
+  componentWillReceiveProps() {
+    socket.on('offline:users', this.setOfflineUsers);
+    socket.on('online:users', this.setOnlineUsers);
   }
 
   renderUserList() {
-    let filteredUsers = this.props.allUsers
+    let filteredUsers = this.props.allUsers.filter( user => user._id !== this.props.currentUser)
 
     return filteredUsers.map((user) => {
       let recipient = {}
@@ -108,7 +110,8 @@ class UserList extends Component {
 function mapStateToProps(state) {
   return {
     currentUser: state.auth.currentUser,
-    allUsers: state.users
+    allUsers: state.users.allUsers,
+    onlineUsers: state.users.onlineUsers
   }
 }
 

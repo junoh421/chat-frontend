@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import { socket } from '../../socket'
 
 export default function(ComposedComponent) {
   class Authentication extends Component {
-    static contextTypes = {
-      router: PropTypes.object
-    }
-
     componentWillMount() {
       if (!this.props.authenticated) {
         this.props.history.push('/');
+      } else {
+        let userId = this.props.currentUser;
+        socket.emit('user:login', {userId});
       }
     }
 
@@ -28,6 +27,7 @@ export default function(ComposedComponent) {
   function mapStateToProps(state) {
     return {
       authenticated: state.auth.authenticated,
+      currentUser: state.auth.currentUser
     };
   }
 
