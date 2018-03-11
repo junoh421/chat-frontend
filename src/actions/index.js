@@ -134,3 +134,21 @@ export const startConversation = ({recipients}, history) => {
     })
   }
 }
+
+// export const fetchOnlineUsers = () => {
+//   return function(dispatch) {
+//     dispatch({ type: 'ONLINE_USERS' });
+//   }
+// }
+//
+// export const addOnlineUser = ({userId}) => {
+//   return function(dispatch) {
+//     dispatch({ type: 'ADD_ONLINE_USER', payload: userId});
+//   }
+// }
+//
+// export const removeOnlineUser = ({userId}) => {
+//   return function(dispatch) {
+//     dispatch({ type: 'REMOVE_ONLINE_USER', payload: userId});
+//   }
+// }

@@ -21,7 +21,6 @@ const token = localStorage.getItem('token');
 
 if (token) {
   store.dispatch( {type: 'AUTH_USER'} );
-  store.dispatch( {type: 'ONLINE_USERS', payload: localStorage.getItem('userId')});
 }
 
 ReactDOM.render(

@@ -11,13 +11,17 @@ class UserList extends Component {
 
     this.state = {
       recipients: [ ],
-      users: [ ]
+      users: [ ],
     };
+
+    let userId = this.props.currentUser;
+    socket.emit('user:login', {userId})
 
     this.addToConversation = this.addToConversation.bind(this);
     this.renderUserList = this.renderUserList.bind(this);
     this.startConversation = this.startConversation.bind(this);
-    this.renderOnlineUsers = this.renderOnlineUsers.bind(this);
+    this.addOnlineUser = this.addOnlineUser.bind(this);
+    this.removeOnlineUser = this.removeOnlineUser.bind(this);
   }
 
   addToConversation({recipient}) {
@@ -25,8 +29,12 @@ class UserList extends Component {
     $(`#user-${recipient.id}`).remove();
   }
 
-  renderOnlineUsers({userId}) {
+  addOnlineUser({userId}) {
     $(`#user-${userId}`).find('.online-status i').css('color', 'green')
+  }
+
+  removeOnlineUser({userId}) {
+    $(`#user-${userId}`).find('.online-status i').css('color', 'gray')
   }
 
   startConversation(event) {
@@ -39,12 +47,13 @@ class UserList extends Component {
     this.props.fetchUsers();
   }
 
-  componentWillReceiveProps() {
-    socket.on('online:users', this.renderOnlineUsers);
+  componentWillUpdate() {
+    socket.on('online:user', this.addOnlineUser);
+    socket.on('offline:user', this.offlineUser)
   }
 
   renderUserList() {
-    let filteredUsers = this.props.allUsers.filter( user => user._id !== this.props.currentUser)
+    let filteredUsers = this.props.allUsers
 
     return filteredUsers.map((user) => {
       let recipient = {}
